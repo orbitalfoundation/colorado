@@ -198,6 +198,14 @@ years this fight repeats; here is the machine to reason about it.
   candidate source: LCRAS decree accounting.
 - County-level economic dependence beyond Imperial (Yuma) — partial.
 - Huntsinger & Barry endangered-species/grazing figure — still `[VERIFY]`.
-- Post-ROD details worth reading first-hand: the ROD PDF itself
-  (P26_RecordofDecision_Final.pdf) before characterizing the Decision
-  Framework in print.
+- ~~Post-ROD details worth reading first-hand~~ ✅ DONE 2026-08-24: ROD PDF
+  in `reference/usbr/`. Key first-hand facts: the Decision Framework adopts
+  *sideboards*, not specific operations — Lower Basin shortages modeled up to
+  3.6 MAF (3.0 distributed among Lower Division States), Powell releases
+  5.0–12.0 MAF; "the Department is not adopting the specific shortage
+  volumes, shortage distributions, or conservation activities"; specifics
+  come via 2-year Operating Guidelines prioritizing consensus. 2027–28
+  models the Lower Division States' own distribution for shortages ≤1.5 MAF
+  and "a representation of applicable law" above. Historical note from the
+  ROD: Powell met its 8.23 MAF objective release in 13 of 19 years,
+  averaging 8.5 MAF over 2008–2026.
