@@ -1,0 +1,4 @@
+0eda8ed3e5f055b13aad0110349a31e9    data/contents/Interannual_Variability.txt
+682c6deedc2ebafcf6c8786fce77d658    data/contents/Sectoral_Water_Consumption.txt
+847fc774b16b3d15f63f70e8e17c9169    data/resourcemap.xml
+b87fbce30ea0e314106bfe3e6403c8d9    data/resourcemetadata.xml

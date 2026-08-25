@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:hsterms="https://www.hydroshare.org/terms/"
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+>
+  <rdf:Description rdf:about="http://www.hydroshare.org/terms/CompositeResource">
+    <rdfs:label>Composite Resource</rdfs:label>
+    <rdfs:isDefinedBy rdf:resource="https://www.hydroshare.org/terms/"/>
+  </rdf:Description>
+  <hsterms:CompositeResource rdf:about="http://www.hydroshare.org/resource/2098ae29ae704d9aacfd08e030690392">
+    <dc:subject>Colorado River</dc:subject>
+    <dc:subject>water scarcity</dc:subject>
+    <dc:date>
+      <dcterms:created>
+        <rdf:value>2024-02-13T17:30:56.556097+00:00</rdf:value>
+      </dcterms:created>
+    </dc:date>
+    <dc:date>
+      <dcterms:modified>
+        <rdf:value>2024-04-22T14:41:44.837368+00:00</rdf:value>
+      </dcterms:modified>
+    </dc:date>
+    <dc:creator>
+      <rdf:Description>
+        <hsterms:description rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">26408</hsterms:description>
+        <hsterms:organization>Sustainable Waters LLC</hsterms:organization>
+        <hsterms:hydroshare_user_id rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">26408</hsterms:hydroshare_user_id>
+        <hsterms:name>Richter, Brian</hsterms:name>
+        <hsterms:creatorOrder rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</hsterms:creatorOrder>
+        <hsterms:email>brian@sustainablewaters.org</hsterms:email>
+      </rdf:Description>
+    </dc:creator>
+    <dc:language>eng</dc:language>
+    <dc:identifier>
+      <rdf:Description>
+        <hsterms:hydroShareIdentifier rdf:resource="http://www.hydroshare.org/resource/2098ae29ae704d9aacfd08e030690392"/>
+      </rdf:Description>
+    </dc:identifier>
+    <dc:subject>water budget</dc:subject>
+    <dcterms:bibliographicCitation>Richter, B. (2024). COLORADO RIVER Basin Water Budget, HydroShare, http://www.hydroshare.org/resource/2098ae29ae704d9aacfd08e030690392</dcterms:bibliographicCitation>
+    <dc:title>COLORADO RIVER Basin Water Budget</dc:title>
+    <dc:subject>water management</dc:subject>
+    <dc:description>
+      <rdf:Description>
+        <dcterms:abstract>Persistent overuse of water supplies from the Colorado River during recent decades has substantially depleted large storage reservoirs and triggered mandatory cutbacks in water use. The river holds critical importance to more than 40 million people and more than two million hectares of cropland. Therefore, a full accounting of where the river’s water goes en route to its delta is necessary. Detailed knowledge of how and where the river’s water is used can aid design of strategies and plans for bringing water use into balance with available supplies. Here we apply authoritative primary data sources and modeled crop and riparian/wetland evapotranspiration estimates to compile a water budget based on average consumptive water use during 2000-2019. Overall water consumption includes both direct human uses in the municipal, commercial, industrial, and agricultural sectors, as well as indirect water losses to reservoir evaporation and water consumed through riparian/wetland evapotranspiration. Irrigated agriculture is responsible for 74% of direct human uses and 52% of overall water consumption. Water consumed for agriculture amounts to three times all other direct uses combined. Cattle feed crops including alfalfa and other grass hays account for 46% of all direct water consumption.</dcterms:abstract>
+      </rdf:Description>
+    </dc:description>
+    <dc:type rdf:resource="http://www.hydroshare.org/terms/CompositeResource"/>
+    <dc:rights>
+      <rdf:Description>
+        <hsterms:URL rdf:resource="http://creativecommons.org/licenses/by/4.0/"/>
+        <hsterms:rightsStatement>This resource is shared under the Creative Commons Attribution CC BY.</hsterms:rightsStatement>
+      </rdf:Description>
+    </dc:rights>
+    <hsterms:geospatialRelation>
+      <rdf:Description>
+        <hsterms:relation_name>Upper Colorado Region [hu02/14]</hsterms:relation_name>
+        <dcterms:relation rdf:resource="https://geoconnex.us/ref/hu02/14"/>
+      </rdf:Description>
+    </hsterms:geospatialRelation>
+    <dc:subject>consumptive water use</dc:subject>
+    <hsterms:geospatialRelation>
+      <rdf:Description>
+        <dcterms:relation rdf:resource="https://geoconnex.us/ref/hu02/15"/>
+        <hsterms:relation_name>Lower Colorado Region [hu02/15]</hsterms:relation_name>
+      </rdf:Description>
+    </hsterms:geospatialRelation>
+    <dc:subject>irrigated agriculture</dc:subject>
+  </hsterms:CompositeResource>
+</rdf:RDF>
