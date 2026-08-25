@@ -64,10 +64,13 @@ against Reclamation — see the post-2026 section below.
   Compact's Article III(b) adds a conditional 1.0 MAF for the Lower Basin
   (→ 17.5 MAF paper total). State which framing whenever quoted.
   Sources: CRS R45546 (congress.gov), watereducation.org.
-- **Lees Ferry natural flow ✅ VERIFIED with period labels**: 14.76 MAF/yr
-  (1906–2018) vs 12.47 MAF/yr (2000–2018), computed from Reclamation's
-  Natural Flow Data Base (via inkstain.net analysis); USU gives 14.67 vs 12.3
-  through 2021. Brief's "~14.8 vs ~12.4" is fine ONLY with periods stated.
+- **Lees Ferry natural flow ✅ VERIFIED from primary data in-repo**:
+  Reclamation's provisional natural-flow spreadsheet (1906–2024, water years,
+  `reference/usbr/`, baked to `data/lees-ferry-natural-flow.json`) gives
+  **15.22 MAF/yr (1906–1999) vs 12.40 MAF/yr (2000–2024)**; 14.75 (1906–2018)
+  and 12.43 (2000–2018) match the independently published NFDB-derived means
+  (inkstain.net: 14.76/12.47) within 0.04. Brief's "~14.8 vs ~12.4" is fine
+  ONLY with periods stated; prefer our computed period-labeled pairs.
 - **Delta ✅ VERIFIED**: no regular flow to the Gulf of California since 1960
   (flood-year exceptions 1983, 1993, 1998). Minute 319 signed **Nov 20,
   2012** (IBWC document date; some secondary sources wrongly say Nov 12);
