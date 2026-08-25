@@ -135,3 +135,15 @@ Adopting the brief's phases with local adjustments:
 
 These are working positions, not verdicts — each gets its own devlog entry if
 it changes.
+
+## Standing reservations (Anselm, same day)
+
+- **Tone: "something a bit less game like."** The play/challenge/no-win-state
+  riff stands for now, but revisit after the first working version. Lean
+  *instrument* over *toy*: an explorable model a serious reader trusts, not a
+  game with a score. Watch the copy especially — "challenge", "solve it",
+  "send me your link" framing may need to soften into "explore the constraint
+  space" language. Revisit explicitly before Phase 6 (publication).
+- **Devlog scope**: this project's devlog lives here and only here. The
+  `orbital/devlog/` next door belongs to the larger, more generic orbital
+  vision and must not be polluted with this deep dive.
