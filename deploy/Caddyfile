@@ -1,0 +1,14 @@
+# Who Drinks the River — static prototype on the colorado exe.dev VM.
+# exe.dev terminates TLS and proxies https://colorado.exe.xyz -> :8000.
+{
+	admin off
+	auto_https off
+}
+
+:80 {
+	root * /srv/site
+	encode gzip zstd
+	@data path /data/*
+	header @data Cache-Control "public, max-age=3600"
+	file_server
+}
