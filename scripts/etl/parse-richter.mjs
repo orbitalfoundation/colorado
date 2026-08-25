@@ -68,7 +68,8 @@ function parseSectoral(text) {
 
 // ---- Interannual_Variability.txt ------------------------------------------
 // Two blocks of rows (acre-feet, then METRIC = MCM); each data row is
-// label, then 20 annual values for 2000-2019, then AVG/TREND/MIN/MAX/RANGE.
+// label (col 0), then 20 annual values for 2000-2019 (cols 1-20), a blank,
+// then AVG/TREND/MIN/MAX/RANGE.
 
 const YEARS = Array.from({ length: 20 }, (_, i) => 2000 + i);
 
@@ -77,12 +78,12 @@ function parseInterannual(text) {
   const out = { years: YEARS, acreFeet: {}, mcm: {} };
   let block = 'acreFeet';
   for (const cols of lines) {
-    const label = cols[1]?.replaceAll('"', '').trim();
+    const label = cols[0]?.replaceAll('"', '').trim();
     if (label === 'METRIC') { block = 'mcm'; continue; }
     if (!label || label.startsWith('AVG ')) continue;
-    const series = cols.slice(2, 22).map(num);
-    if (series.some((v) => v !== null)) {
-      out[block][label] = { series, avg: num(cols[23]) };
+    const series = cols.slice(1, 21).map(num);
+    if (series.filter((v) => v !== null).length === 20) {
+      out[block][label] = { series, avg: num(cols[22]) };
     }
   }
   return out;
