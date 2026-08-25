@@ -135,9 +135,69 @@ years this fight repeats; here is the machine to reason about it.
   `water-atlas/site/src/lib/Splash.svelte` paper-vs-wet two-bar visual —
   directly reusable for the over-allocation set-piece.
 
-## Pending (economics/news agent still in flight)
+## Economics & news (web-verified 2026-08-24)
 
-- SCPP $/AF; alfalfa $/AF; Crowley County; IID entitlement & Imperial County
-  ag economy; Rio Grande late-2025 arrears deal; 2026 Texas v. New Mexico
-  outcome; Grantham & Viers 2014 exact figures; Richter citation
-  cross-check; Future Ecologies FE5.7 details.
+- **⚠️ CORRECTED — alfalfa value (brief §7 asymmetry note)**: "low tens of
+  dollars per acre-foot" is wrong as a value figure. Published estimates:
+  ~$170/AF applied (California statewide, 2010 data in 2014$, Pacific
+  Institute "CA Agricultural Water Use", pacinst.org PDF); $299/AF revenue,
+  up to ~$452/AF at 2022 hay prices (U. of Arizona Frisvold & Duval via
+  azfb.org). The "tens of dollars" number conflates crop value with IID's
+  *water price* (~$20/AF). Consequence: alfalfa revenue per AF is the same
+  order of magnitude as what the government paid for forbearance — which is
+  the more interesting story (vegetables still 5–10x higher per AF).
+- **CORRECTED — conservation-payment program labels**: SCPP is the *Upper*
+  Basin program (UCRC-run; $150/AF fixed offer 2023, realized average
+  ~$418/AF: $15.8M for ~37.8 KAF, Choices Magazine); the *Lower* Basin
+  IRA-funded program is separate with fixed tiers $330/$365/$400 per AF for
+  1/2/3-year commitments (Interior via KUNC, Oct 2022). Brief's "$300–400"
+  was right in magnitude, wrong in basin attribution.
+- **Crowley County ✅ VERIFIED**: Colorado Canal (1891) irrigated >50,000
+  acres around Ordway; 1970s–80s sales (Foxley 1972, then CLADCO → Aurora,
+  Colorado Springs, Pueblo, Pueblo West) left ~2,500 irrigated acres; dust
+  storms, weeds; 2011 estimate 48.1% of residents in poverty; economy now
+  ranching + two prisons (Water Education Colorado Headwaters Fall 2017;
+  Colorado Sun 2024; Wikipedia). Use ">50,000 → ~2,500 acres".
+- **Rio Grande news ✅ VERIFIED with precise dates**: five-year treaty cycle
+  ended Oct 24–25, 2025 with Mexico ~880 KAF delivered of 1.75 MAF owed
+  (~50.6%); deal announced ~Dec 12, 2025 (USDA release): 202,000 AF released
+  starting week of Dec 15, 2025, repayment plan due Jan 31, 2026; tariff
+  threat context. Distinct from IBWC Minute 331 (Nov 7, 2024) — don't
+  conflate. Texas v. New Mexico and Colorado (No. 141 Orig.): SCOTUS entered
+  the consent decree **effective May 26, 2026** — NM reduces Lower Rio
+  Grande depletions 18,200 AF/yr within ten years, half by 2031; ends
+  litigation begun 2013; an earlier state-only decree was rejected 5–4 on
+  Jun 21, 2024 (somachlaw.com; NM governor's office; Source New Mexico).
+- **Grantham & Viers 2014 ✅ VERIFIED with unit nuance**: *Environmental
+  Research Letters* 9:084012, doi:10.1088/1748-9326/9/8/084012. Paper
+  abstract: "water right allocations total 400 billion cubic meters,
+  approximately five times the state's mean annual runoff" (12,621 active
+  appropriative rights). UC Davis press release: 370 MAF allocated vs
+  ~70 MAF available. Attribute 400 Bm³/5x to the paper, 370/70 to the
+  release. The brief's "192 vs 72" is retired (see CA dataset section).
+- **IID & Imperial County ✅ VERIFIED**: IID holds 3.1 MAF/yr entitlement
+  (2.6 MAF Present Perfected Rights, 1901 priority) — largest single
+  entitlement on the river, >⅔ of California's 4.4 MAF; serves ~475–500K
+  acres (iid.com; Wikipedia). Imperial County gross ag value $2.61B (2022),
+  $2.69B (2023); top commodity cattle at $697.7M (County Ag Commissioner
+  crop reports; Calexico Chronicle).
+- **Future Ecologies ✅ VERIFIED**: FE5.7 "Home on the Rangelands: Welcome to
+  Cowlifornia (Part 1)", Feb 9, 2024; parts 2 (FE5.8, Mar 18) and 3 (FE5.9,
+  Apr 29, 2024). Episode challenges "the conventional environmentalist
+  perspective that cattle are always a destructive force." Note: the
+  rain-fed (non-river-water) characterization of CA annual grasslands is
+  accurate but is our inference, not the episode's own wording — phrase
+  accordingly.
+
+## Remaining open flags
+
+- Brief Claim 2's "14 million acres burned better suited to cattle feed" —
+  unverified, still `[VERIFY]`.
+- Alfalfa cutting counts by region (Claim 2 steelman) — still `[VERIFY]`.
+- Diversion-to-consumption ratios by district (Claim 3b) — still `[VERIFY]`;
+  candidate source: LCRAS decree accounting.
+- County-level economic dependence beyond Imperial (Yuma) — partial.
+- Huntsinger & Barry endangered-species/grazing figure — still `[VERIFY]`.
+- Post-ROD details worth reading first-hand: the ROD PDF itself
+  (P26_RecordofDecision_Final.pdf) before characterizing the Decision
+  Framework in print.
