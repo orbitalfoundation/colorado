@@ -45,6 +45,12 @@ section.movement p b { color: var(--ink); }
 .card a { color: var(--accent); text-decoration: none; }
 .scroll-hint { font: .72rem var(--mono); color: var(--muted); margin-top: .6rem; }
 .evt { font: .74rem var(--mono); color: var(--accent); min-height: 2.2em; }
+.card.wide { max-width: 27rem; }
+.fig-note { font-size: .78rem !important; color: var(--muted) !important; }
+.denoms { display: flex; gap: .4rem; margin: .5rem 0 .2rem; }
+.denoms button { font: .74rem var(--sans); padding: .3rem .55rem; border-radius: 4px;
+  cursor: pointer; border: 1px solid var(--ring); background: transparent; color: var(--ink-2); }
+.denoms button[aria-pressed="true"] { background: var(--accent); border-color: transparent; color: #fff; }
 
 #dock { position: fixed; left: 0; right: 0; bottom: 0; height: 88px; z-index: 8;
   background: var(--surface); box-shadow: 0 0 0 1px var(--ring);
@@ -90,14 +96,26 @@ svg text { font: 10px var(--mono); fill: var(--muted); }
     </div>
   </section>
   <section class="movement" id="m-drinks">
-    <div class="card">
+    <div class="card wide">
       <div class="kicker">movement III · demand</div>
       <h2>Who drinks it</h2>
-      <p>Cities take some: Las Vegas, Phoenix, Los Angeles by aqueduct.
-      Denver pulls water through the mountains to the far side of the divide.
-      But the largest single draw is irrigated farmland in the desert
-      southwest, and the largest crop is feed for cattle.</p>
-      <p class="scroll-hint">[skeleton: Sankey with denominator toggle goes here]</p>
+      <p>The canals drawn on the map are real: the Central Arizona Project
+      lifting water to Phoenix, the All-American and Coachella feeding the
+      Imperial and Coachella valleys. Cities take some. But follow the
+      widths:</p>
+      <div class="denoms" id="denoms">
+        <button data-d="total">share of everything consumed</button>
+        <button data-d="direct">share of direct human use</button>
+      </div>
+      <svg id="sankey" preserveAspectRatio="none" style="width:100%;height:210px"></svg>
+      <p class="fig-note" id="sankeynote"></p>
+      <p>So "half the river goes to cattle feed" is true of the water humans
+      take, and a third of everything the basin consumes. Both numbers are
+      real. Arguments happen when people quote one and hear the other.</p>
+      <p class="fig-note">One more distinction the cattle arguments miss: the
+      conservation case for cows is about rain-fed rangeland, which draws
+      almost nothing from the river. This water grows irrigated feed. Same
+      animal, two different water stories.</p>
     </div>
   </section>
   <section class="movement" id="m-promises">

@@ -88,3 +88,13 @@ savings" (1966→today, the 46.9 MAF 1986 peak then the drain). An event ticker
 fires as the scrub passes each verified Law-of-the-River moment, 1922 Compact
 through the Aug 2026 ROD. History reads as animated data. Verified live,
 light/dark, desktop/mobile.
+
+**M4 shipped same day**: movement III done. Real diversion geometry from OSM
+(CAP 66 segments, All-American 24, Coachella 82 — ODbL; the Colorado River
+Aqueduct is mostly tunnels tagged differently in OSM, deferred rather than
+faked) drawn in orange only during the demand movement. Hand-rolled Sankey
+from the Richter accounting with the **denominator toggle**: "share of
+everything consumed" (cattle feed 33%) vs "share of direct human use" (47%),
+non-human bands dimming out; ?denom=direct deep-links the mode. The
+half-the-river claim and the two-cows distinction are now adjudicable on
+screen. Verified both modes, light/dark, desktop/mobile.

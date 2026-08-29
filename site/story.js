@@ -6,6 +6,7 @@ import { loadAll, makeMap, addOverlays, makeReservoirMarkers, buildStrip,
   M0, M_END, SEAM, mlabel, darkMedia } from './core.mjs';
 
 const data = await loadAll();
+const canals = await fetch('./data/geometry/canals.json').then((r) => r.json());
 
 const STAKES = [
   { name: 'Las Vegas', ll: [-115.14, 36.17] },
@@ -33,7 +34,7 @@ const H_SPLIT = 1966 * 12;
 const MOVES = {
   'm-river':    { bounds: [[-117.5, 30.8], [-105.2, 43.6]], time: SEAM },
   'm-born':     { bounds: [[-112.5, 37.8], [-105.6, 43.7]], time: SEAM },
-  'm-drinks':   { bounds: [[-118.8, 31.0], [-108.5, 37.6]], time: SEAM, stakes: true },
+  'm-drinks':   { bounds: [[-118.8, 31.0], [-108.5, 37.6]], time: SEAM, stakes: true, canals: true },
   'm-promises': { bounds: [[-114.8, 34.6], [-108.8, 39.0]], scrub: [M0, H_SPLIT], evt: 'evt-promises' },
   'm-history':  { bounds: [[-116.6, 33.9], [-109.4, 38.6]], scrub: [H_SPLIT, SEAM], evt: 'evt-history' },
   'm-future':   { bounds: [[-117.5, 30.8], [-105.2, 43.6]], scrub: [SEAM, M_END] },
@@ -81,6 +82,63 @@ function updateFlowFig(m) {
   }
 }
 
+// ---- Sankey: where the water goes, with a denominator toggle -------------
+const MCM2MAF = 1 / 1233.48;
+function sankeyRows() {
+  const s = data.richter.sectoral.sectors;
+  const ag = s['Irrigated agriculture'];
+  const feed = ag.crops['Alfalfa'].total + ag.crops['Other Hay'].total;
+  return [
+    { id: 'feed', label: 'cattle feed', v: feed, human: true, hue: 'var(--accent)' },
+    { id: 'crops', label: 'other crops', v: ag.total - feed, human: true, hue: 'color-mix(in srgb, var(--accent) 45%, var(--surface))' },
+    { id: 'mci', label: 'cities & industry', v: s['Municipal, Commercial & Industrial'].total, human: true, hue: 'color-mix(in srgb, var(--accent) 65%, var(--surface))' },
+    { id: 'evap', label: 'reservoir evaporation', v: s['Reservoir Evaporation'].total, human: false, hue: 'var(--grid)' },
+    { id: 'riparian', label: 'wild vegetation', v: s['Riparian & Wetland ET'].total, human: false, hue: 'var(--grid)' },
+  ];
+}
+let denom = new URLSearchParams(location.search).get('denom') === 'direct' ? 'direct' : 'total';
+function drawSankey() {
+  const rows = sankeyRows();
+  const total = rows.reduce((a, r) => a + r.v, 0);
+  const direct = rows.filter((r) => r.human).reduce((a, r) => a + r.v, 0);
+  const base = denom === 'total' ? total : direct;
+  const W = 360, H = 210, GAP = 3, TOP = 8, BOT = 6, LX = 6, LW = 10, RX = 196, RW = 10;
+  const usable = H - TOP - BOT - GAP * (rows.length - 1);
+  const scale = usable / total;
+  const g = [];
+  let ySrc = TOP + (denom === 'direct' ? 0 : 0), yR = TOP;
+  // source bar sized to the chosen denominator
+  const srcH = base * scale;
+  g.push(`<rect x="${LX}" y="${TOP}" width="${LW}" height="${srcH}" rx="2" fill="var(--accent)" opacity=".9"/>`);
+  g.push(`<text x="${LX}" y="${TOP + srcH + 12}">${(base * MCM2MAF).toFixed(1)} MAF/yr</text>`);
+  let yL = TOP;
+  for (const r of rows) {
+    const dim = denom === 'direct' && !r.human;
+    const h = r.v * scale;
+    const y0 = yL, y1 = yR;
+    if (!dim) {
+      g.push(`<path d="M ${LX + LW} ${y0} C ${W * 0.42} ${y0}, ${W * 0.42} ${y1}, ${RX} ${y1}
+        L ${RX} ${y1 + h} C ${W * 0.42} ${y1 + h}, ${W * 0.42} ${y0 + h}, ${LX + LW} ${y0 + h} Z"
+        fill="${r.hue}" opacity="${r.human ? '.75' : '.45'}"/>`);
+      yL += h;
+    }
+    g.push(`<rect x="${RX}" y="${y1}" width="${RW}" height="${h}" rx="2" fill="${r.hue}" opacity="${dim ? '.25' : '.9'}"/>`);
+    const pct = dim ? '·' : `${(r.v / base * 100).toFixed(0)}%`;
+    g.push(`<text x="${RX + RW + 6}" y="${y1 + h / 2 + 3}" ${dim ? 'opacity=".45"' : ''}>${dim ? '' : pct + ' '}${r.label} · ${(r.v * MCM2MAF).toFixed(1)}</text>`);
+    yR += h + GAP;
+  }
+  $('sankey').setAttribute('viewBox', `0 0 ${W} ${H}`);
+  $('sankey').innerHTML = g.join('');
+  $('sankeynote').textContent = denom === 'total'
+    ? 'Everything the basin consumes, 2000–2019 average (Richter et al. 2024). MAF/yr.'
+    : 'Direct human use only: reservoir evaporation and the river\u2019s own vegetation set aside.';
+  for (const b of $('denoms').children) b.setAttribute('aria-pressed', String(b.dataset.d === denom));
+}
+$('denoms').addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-d]');
+  if (b) { denom = b.dataset.d; drawSankey(); }
+});
+
 // ---- map / dock ----------------------------------------------------------
 function buildAll() {
   mapReady = false;
@@ -89,6 +147,10 @@ function buildAll() {
   map.on('load', () => {
     addOverlays(map, data);
     setDiscs = makeReservoirMarkers(map, data.lakes);
+    map.addSource('canals', { type: 'geojson', data: canals });
+    map.addLayer({ id: 'canals', type: 'line', source: 'canals',
+      paint: { 'line-color': darkMedia.matches ? '#d95926' : '#eb6834',
+        'line-width': 1.6, 'line-opacity': 0 } });
     stakeMarkers = STAKES.map(({ name, ll }) => {
       const el = document.createElement('div');
       el.textContent = name;
@@ -100,6 +162,7 @@ function buildAll() {
   });
   strip = buildStrip($('strip'), data, { title: false });
   buildFlowFig();
+  drawSankey();
 }
 
 const state = { active: null, m: SEAM };
@@ -136,6 +199,7 @@ function onScroll(force = false) {
     state.active = active;
     if (mapReady) map.fitBounds(mv.bounds, { padding: 30, duration: 1600 });
     for (const mk of stakeMarkers) mk.getElement().style.visibility = mv.stakes ? 'visible' : 'hidden';
+    if (map.getLayer('canals')) map.setPaintProperty('canals', 'line-opacity', mv.canals ? 0.9 : 0);
   }
   setTime(mv.scrub ? mv.scrub[0] + (mv.scrub[1] - mv.scrub[0]) * progress : mv.time);
 }
