@@ -37,7 +37,16 @@ export async function loadAll() {
     for (const y of run.years) simYear[y.year] = y.storageAF;
     simYear[2026] = storage.latest.combined;
     const tail = run.years.slice(10);
-    return { run, steadyShortageAF: tail.reduce((a, y) => a + y.unmetAF, 0) / tail.length };
+    const floorYear = run.years.find((y) => y.unmetAF > 0)?.year ?? null;
+    const minY = run.years.reduce((a, y) => (y.storageAF < a.storageAF ? y : a));
+    return {
+      run,
+      steadyShortageAF: tail.reduce((a, y) => a + y.unmetAF, 0) / tail.length,
+      floorYear,
+      minStorageAF: minY.storageAF, minYear: minY.year,
+      endStorageAF: run.years.at(-1).storageAF,
+      spillAF: run.years.reduce((a, y) => a + y.spillAF, 0),
+    };
   }
   setFuture();
 

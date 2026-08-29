@@ -49,6 +49,12 @@ section.movement p b { color: var(--ink); }
 .evt { font: .74rem var(--mono); color: var(--accent); min-height: 2.2em; }
 .card.wide { max-width: 27rem; }
 .fig-note { font-size: .78rem !important; color: var(--muted) !important; }
+#consequences { margin: .5rem 0; }
+#consequences .c { font-size: .8rem; margin: .3rem 0; padding-left: 1.15rem; text-indent: -1.15rem; color: var(--ink-2); }
+#consequences .c b { color: var(--ink); }
+.drawer { margin: .6rem 0; font-size: .85rem; }
+.drawer summary { cursor: pointer; color: var(--accent); font-size: .8rem; }
+.drawer p { margin: .5rem 0; color: var(--ink-2); font-size: .85rem; }
 .denoms { display: flex; gap: .4rem; margin: .5rem 0 .2rem; }
 .denoms button { font: .74rem var(--sans); padding: .3rem .55rem; border-radius: 4px;
   cursor: pointer; border: 1px solid var(--ring); background: transparent; color: var(--ink-2); }
@@ -197,6 +203,34 @@ svg text { font: 10px var(--mono); fill: var(--muted); }
       </div>
       <p class="fig-note" id="forkout"></p>
       <p class="fig-note" id="forkparties" style="font-variant-numeric:tabular-nums"></p>
+      <div id="consequences"></div>
+      <details class="drawer"><summary>about these levers: what the sliders gloss over</summary>
+        <p><b>Cattle feed.</b> Alfalfa is the desert's shock absorber: the one
+        big crop that can pause mid-season without killing a planting, and it
+        fills rotation gaps and marginal fields other crops cannot use. It
+        rides multiple cuttings a year in heat that would ruin hay elsewhere,
+        and the dairies and feedlots downstream of it are businesses, not
+        abstractions. Fallowing rents the water back for a season. Permanent
+        retirement buys the community: Crowley County, Colorado sold its
+        canal shares in the 1970s and 80s, irrigated acres fell from more
+        than 50,000 to about 2,500, and it never recovered.</p>
+        <p><b>Other crops.</b> Much of the remaining third of mainstem
+        irrigation is winter vegetables and perennial plantings. Yuma and
+        Imperial grow most of the winter greens on American and Canadian
+        plates (Richter et&nbsp;al. 2024); vegetables return roughly
+        $1,000–3,000 per acre-foot against alfalfa's $170–450, and an
+        orchard cannot be fallowed without killing it. This lever cuts the
+        highest-value, least flexible water.</p>
+        <p><b>Cities.</b> The 40% ceiling reflects what deep conservation
+        programs have plausibly reached; beyond it you are not saving water,
+        you are moving people. Urban water is also the most expensive water
+        to replace.</p>
+        <p class="fig-note">Prices: federal forbearance programs paid
+        $330–418 per acre-foot in 2023–24 (Reclamation / UCRC); crop revenue
+        per acre-foot from Pacific Institute and Univ. of Arizona figures.
+        Not yet modeled: return flows, groundwater substitution, hysteresis
+        of farm communities. Sources ship with the model.</p>
+      </details>
       <p class="fig-note">Seniority here is a party-level stylization (CAP's
       1968 juniority, cuts stacking AZ → NV → Mexico → CA); real law works on
       individual rights. Retiring feed irrigation is modeled as a plain

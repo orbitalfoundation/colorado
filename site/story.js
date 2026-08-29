@@ -168,7 +168,55 @@ const fork = {
   regime: REGIMES[q0.get('regime')] ? q0.get('regime') : 'framework2728',
 };
 let steadyShortageAF = 0;
+let futureInfo = null;
 let partyMarkers = {};
+
+// Verified economics (docs/verification.md): forbearance $330-418/AF
+// (Reclamation LB tiers / UCRC SCPP realized); revenue per AF applied:
+// alfalfa ~$170-450 (Pacific Institute CA; U. of Arizona), vegetables
+// ~$1,000-3,000 (Pacific Institute).
+const PRICE = { forbear: [330, 418], feedRev: [170, 450], cropRev: [1000, 3000] };
+const B = (af, [lo, hi]) => `$${(af * lo / 1e9).toFixed(1)}–${(af * hi / 1e9).toFixed(1)}B/yr`;
+
+function consequenceRows() {
+  const f = futureInfo, out = [];
+  const sev = (icon, cls, html) => out.push({ icon, cls, html });
+  const feedAF = fork.feed / 100 * FEED_MAX_AF;
+  const cropsAF = fork.crops / 100 * CROPS_MAX_AF;
+  const cityAF = fork.city / 100 * CITY_MAX_AF;
+  if (f.floorYear) {
+    sev('✕', 'crit', `<b>critical:</b> the system hits bottom in <b>${f.floorYear}</b> — after that, cuts stop being policy and become physics`);
+    sev('✕', 'crit', `hydropower at Hoover and Glen Canyon fails before storage reaches the floor; the delta stays dry throughout`);
+  } else if (f.minStorageAF < 8e6) {
+    sev('▲', 'serious', `<b>serious:</b> storage bottoms near <b>${(f.minStorageAF / 1e6).toFixed(0)} MAF</b> (${f.minYear}) — hydropower and physical delivery move to the edge`);
+  }
+  if (steadyShortageAF > 5e4) {
+    const nv = steadyShortageAF / ENTITLEMENTS_AF.nevada;
+    sev('▲', 'serious', `unfilled demand <b>${(steadyShortageAF / 1e6).toFixed(1)} MAF/yr</b> — about <b>${nv.toFixed(0)}×</b> Nevada's entire share, taken per the rule above`);
+  }
+  if (feedAF > 5e4) {
+    sev('●', 'warn', `paying farmers to give up this much feed water costs <b>${B(feedAF, PRICE.forbear)}</b> at 2023–24 forbearance prices — every year, forever`);
+    sev('●', 'warn', `feed revenue off the land: <b>${B(feedAF, PRICE.feedRev)}</b>, plus the dairies and feedlots it supplies (Crowley County is the cautionary tale — see the drawer)`);
+  }
+  if (cropsAF > 5e4) {
+    sev('▲', 'serious', `<b>serious:</b> retiring other crops removes <b>${B(cropsAF, PRICE.cropRev)}</b> of mostly winter vegetables and orchards — the highest-value, least fallowable water on the river`);
+  }
+  if (cityAF > 5e4) {
+    sev('●', 'warn', `urban conservation of <b>${(cityAF / 1e6).toFixed(1)} MAF/yr</b> ≈ <b>${(cityAF / ENTITLEMENTS_AF.nevada).toFixed(1)}×</b> Nevada's share — real, but the most expensive water to find`);
+  }
+  if (f.spillAF > 1e5) sev('✓', 'ok', `water reaches the sea again in this future (${(f.spillAF / 1e6).toFixed(1)} MAF total spill)`);
+  else sev('●', 'warn', `the delta receives nothing in this future — the river still ends in the desert`);
+  if (!f.floorYear && f.endStorageAF > 16e6 && fork.flow > 100)
+    sev('●', 'warn', `this recovery leans on <b>${fork.flow}%</b> flow — wet decades nobody can order`);
+  if (!f.floorYear && steadyShortageAF <= 5e4 && f.endStorageAF > 14e6 && feedAF + cropsAF + cityAF > 5e5)
+    sev('✓', 'ok', `the buffer rebuilds to <b>${(f.endStorageAF / 1e6).toFixed(0)} MAF</b> by 2057 — bought with the costs above`);
+  return out;
+}
+const SEVC = { crit: '#d03b3b', serious: '#ec835a', warn: '#b58900', ok: '#0ca30c' };
+function drawConsequences() {
+  $('consequences').innerHTML = consequenceRows().map((r) =>
+    `<div class="c"><span style="color:${SEVC[r.cls]}">${r.icon}</span> ${r.html}</div>`).join('');
+}
 
 function syncForkUrl() {
   const q = new URLSearchParams(location.search);
@@ -208,9 +256,10 @@ function updateParties() {
 function applyFork() {
   const agCutAF = fork.feed / 100 * FEED_MAX_AF + fork.crops / 100 * CROPS_MAX_AF;
   const mciCutAF = fork.city / 100 * CITY_MAX_AF;
-  const { steadyShortageAF: s } = data.setFuture({
-    flowFrac: fork.flow / 100, agCutAF, mciCutAF });
-  steadyShortageAF = s;
+  const info = data.setFuture({ flowFrac: fork.flow / 100, agCutAF, mciCutAF });
+  steadyShortageAF = info.steadyShortageAF;
+  futureInfo = info;
+  const s = info.steadyShortageAF;
   strip = buildStrip($('strip'), data, { title: false });
   $('lv-flow').textContent = `${fork.flow}% · ${(data.meanFlow * fork.flow / 100 / 1e6).toFixed(1)} MAF/yr`;
   $('lv-feed').textContent = `${fork.feed}% · −${(fork.feed / 100 * FEED_MAX_AF / 1e6).toFixed(1)} MAF/yr`;
@@ -224,6 +273,7 @@ function applyFork() {
   $('forkparties').innerHTML = PARTIES.map((pid) =>
     `<span style="color:${PARTY_META[pid].color}">●</span> ${PARTY_META[pid].name} <b>${((ENTITLEMENTS_AF[pid] - cuts[pid]) / 1e6).toFixed(1)}</b>/${(ENTITLEMENTS_AF[pid] / 1e6).toFixed(1)}`).join(' · ');
   updateParties();
+  drawConsequences();
   setTime(state.m);
 }
 

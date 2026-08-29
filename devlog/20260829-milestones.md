@@ -124,3 +124,30 @@ irrigation, computed from Richter accounting units), retire other crops
 (30.5%), urban conservation (capped 40%). New fork discovered: 90% flow +
 modest shared cuts (−2.5 MAF total) and the reservoirs RECOVER to 17 MAF by
 2037 — the shared-sacrifice-rebuilds-the-buffer scenario.
+
+**TODO (Anselm, 2026-08-30):** cite the research and advisory ecosystem
+somewhere in the piece — the model should point at the people who do this
+professionally. Candidate bodies to verify and link (names from memory, all
+to be confirmed before citing): the Colorado River Research Group, the
+Getches-Wilkinson Center (CU Boulder), the Utton Center (UNM), the Babbitt
+Center for Land and Water Policy (Lincoln Institute), the Water & Tribes
+Initiative, the Upper Colorado River Commission, the Colorado River Board of
+California, CRWUA, and Reclamation's own Basin Study program. Natural home:
+a sources/further-reading section near the M9 reconstruction page.
+
+**M5.6 shipped 2026-08-30 — consequences.** Anselm's critique: "all outcomes
+feel ok, there are no consequences." Fixed with a computed consequences panel
+under the levers, every line from ledger-verified numbers: bad management now
+reads "critical: the system hits bottom in 2029 — after that, cuts stop being
+policy and become physics", with hydropower failure, the shortage expressed
+in multiples of Nevada's entire share, and the delta's permanent dryness
+called out even in recovery futures. Good management now carries its invoice:
+forbearance at $330–418/AF ("every year, forever"), farm revenue off the
+land, and the other-crops lever marked serious because that water is winter
+vegetables and unfallowable orchards at $1,000–3,000/AF. A lever drawer
+("what the sliders gloss over", hecklered clean at 0.61 burstiness) carries
+the agronomy steelman: alfalfa as rotation-filler and shock absorber, Crowley
+County as the retirement-vs-fallowing lesson, the urban 40% ceiling. Still
+absent and honestly labeled: hysteresis, return flows, groundwater, buyout
+price escalation. TODO added: cite the research/advisory ecosystem (names to
+verify) near the M9 sources page.
