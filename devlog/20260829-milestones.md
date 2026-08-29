@@ -184,3 +184,19 @@ specimen and for the cut sizes), "Play the river" section describing the
 real seven-movement experience with the ratchet, "One green spring" hope
 beat before the close. Hecklered 0 tics / burstiness 0.69; arc matches the
 score.
+
+**The river speaks (layer 1 + plumbing) shipped 2026-08-30.** A floating chip
+gives the river an ambient first-person voice: eleven scripted lines keyed to
+movement and fork state (all numbers ledger-verified; heckler correctly
+flags the voice as rhythmically distinct from Anselm's — it is a different
+speaker, aphoristic by design, zero tics). Layer 2 is fully plumbed per
+Anselm's OpenRouter idea: a node container ("river") beside Caddy proxies
+POST /api/river to OpenRouter with grounding enforced server-side (numbers
+only from FACTS+STATE blocks, no persona breaks, no em-dashes), throttled
+5/min/IP, 20/day/IP, 400/day global; /api/river/health gates the ask-box UI.
+No model ID is guessed: the service goes live only when BOTH
+OPENROUTER_API_KEY and RIVER_MODEL are set in /srv/river.env on the VM.
+Decision recorded: ollama on the exe VM rejected (2 vCPU, no GPU — slow,
+hallucination-prone small models for the most voice-sensitive feature);
+home-box-via-ZeroTier remains a possible free layer later. Gotcha:
+explicit CSS display beats the hidden attribute — [hidden]{display:none}.

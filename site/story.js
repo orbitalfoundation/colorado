@@ -367,6 +367,7 @@ function onScroll(force = false) {
     for (const pm of Object.values(partyMarkers)) pm.el.style.visibility = mv.parties ? 'visible' : 'hidden';
   }
   setTime(mv.scrub ? mv.scrub[0] + (mv.scrub[1] - mv.scrub[0]) * progress : mv.time);
+  updateRiver();
 }
 
 let raf = null;
@@ -410,6 +411,62 @@ for (const id of ['forklink', 'forklink2']) $(id)?.addEventListener('click', asy
   catch { el.textContent = location.href; }
   setTimeout(() => { el.textContent = 'copy a link to this fork'; }, 1600);
 });
+// ---- the river speaks ----------------------------------------------------
+// Ambient scripted lines (layer 1, always on); live questions via /api/river
+// when a key is wired (layer 2). Every scripted number is ledger-verified.
+const RIVERLINES = {
+  'm-open': "I used to end in green lagoons. Take your time here.",
+  'm-river': "Forty million of you drink from me. Few of you have seen me.",
+  'm-born': "I am mostly snow. Everything after the mountains is spending.",
+  'm-drinks': "Half of what people take from me grows hay. I keep no grudge against hay; I miss the sea.",
+  'm-promises': "In 1922 they measured my best years and promised them forever.",
+  'm-history': "I filled your two great lakes. You called the savings income.",
+  'm-pulse': "In 2014 you let one percent of a year go, once. I found the sea.",
+  'm-keep': "Keep arguing. Check the arithmetic first. I keep the score.",
+};
+function riverLine() {
+  if (state.active === 'm-future') {
+    const f = futureInfo;
+    if (f?.floorYear) return `In ${f.floorYear} I stop being a policy problem. Bottom is bottom.`;
+    if ((ratchet.feed + ratchet.crops) > 0) return "You retired that land. I have seen towns not come back.";
+    if (f && f.endStorageAF > 15e6) return "You are refilling the lakes. The sea still waits for its turn.";
+    return "This is the future where nothing changes. I have already seen it.";
+  }
+  return RIVERLINES[state.active] ?? RIVERLINES['m-river'];
+}
+function updateRiver() { const el = $('riverline'); if (el) el.textContent = riverLine(); }
+
+let riverLive = false;
+fetch('./api/river/health').then((r) => r.json()).then((h) => {
+  riverLive = Boolean(h.live);
+  if (riverLive) $('riverask').hidden = false;
+}).catch(() => {});
+$('riversend')?.addEventListener('click', askRiver);
+$('riverq')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') askRiver(); });
+async function askRiver() {
+  const q = $('riverq').value.trim();
+  if (!q) return;
+  const out = $('riverreply');
+  out.hidden = false; out.textContent = '…';
+  const f = futureInfo ?? {};
+  try {
+    const r = await fetch('./api/river', { method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ question: q, state: {
+        movement: state.active, year: Math.floor(state.m / 12),
+        flow: fork.flow + '%', feed: effFeed() + '%', crops: effCrops() + '%',
+        city: fork.city + '%', regime: fork.regime,
+        shortageMAF: (steadyShortageAF / 1e6).toFixed(2),
+        floorYear: f.floorYear ?? 'none',
+        endStorageMAF: f.endStorageAF ? (f.endStorageAF / 1e6).toFixed(1) : '',
+        retiredMAF: ((ratchet.feed / 100 * FEED_MAX_AF + ratchet.crops / 100 * CROPS_MAX_AF) / 1e6).toFixed(1),
+      } }) });
+    const data = await r.json();
+    if (data.reply) out.innerHTML = `${data.reply.replace(/</g, '&lt;')}<small>the river · a voice, not an oracle · numbers come from the model</small>`;
+    else { out.textContent = 'The river is resting. Its written lines remain.'; }
+  } catch { out.textContent = 'The river is resting. Its written lines remain.'; }
+}
+
 buildAll();
 applyFork();
 setTime(SEAM);

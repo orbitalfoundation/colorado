@@ -7,6 +7,10 @@
 
 :80 {
 	root * /srv/site
+
+	handle /api/* {
+		reverse_proxy river:8081
+	}
 	encode gzip zstd
 	@data path /data/*
 	header @data Cache-Control "public, max-age=3600"
