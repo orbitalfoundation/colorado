@@ -82,7 +82,10 @@ button.copy { font: .78rem var(--mono); color: var(--accent); background: none; 
   color: var(--accent); border-radius: 4px; cursor: pointer; padding: .25rem .5rem; }
 #riverreply { font: italic .8rem/1.45 var(--sans); color: var(--ink-2); margin-top: .4rem; }
 #riverreply small { font: .62rem var(--mono); color: var(--muted); font-style: normal; display: block; margin-top: .2rem; }
-@media (max-width: 640px) { #riverchip { display: none; } }
+@media (max-width: 640px) {
+  #riverchip { left: .5rem; right: .5rem; bottom: 92px; max-width: none; padding: .4rem .6rem; }
+  #riverline { font-size: .76rem; }
+}
 #dock { position: fixed; left: 0; right: 0; bottom: 0; height: 88px; z-index: 8;
   background: var(--surface); box-shadow: 0 0 0 1px var(--ring);
   padding: .35rem .9rem .3rem; display: flex; flex-direction: column; gap: .1rem; }
