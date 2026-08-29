@@ -209,3 +209,15 @@ years this fight repeats; here is the machine to reason about it.
   and "a representation of applicable law" above. Historical note from the
   ROD: Powell met its 8.23 MAF objective release in 13 of 19 years,
   averaging 8.5 MAF over 2008–2026.
+
+## Post-ROD press corroboration (added 2026-08-30)
+
+NYT (Dance, 2026-08-21) characterizes the 2027–28 cuts as "about a quarter"
+of the three Lower Division states' allocation, Arizona down "about a third"
+— deeper than the negotiated first tranche (1.5 MAF incl. Mexico = 17% of
+the states' 7.5; AZ 760 KAF = 27%). **Open flag: fetch the 2027–2028
+Operating Guidelines document itself and reconcile the exact per-state
+volumes before any publication.** NYT also confirms: voluntary-cuts
+formalization, no mandatory UB cuts, SCOTUS as the looming venue, ~20% flow
+decline over two decades, record-low 2026 snowpack, and uses the direct-use
+denominator for the cattle-feed share. Sources in reference/claims/.
