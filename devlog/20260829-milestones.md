@@ -46,3 +46,10 @@ Notes: CARTO keyless rasters are dead (watermark) → Esri gray canvas;
 OpenFreeMap vector renders in real browsers but not under headless
 verification → deferred; `scripts/shot.mjs` is the new CDP screenshot tool
 with real wall-clock waits (virtual-time races web workers).
+
+**TODO (Anselm, 2026-08-29):** since everybody also has Claude, add a page for
+humans *and* Claudes to reconstruct scenarios: a stable, machine-readable
+description of the model, data provenance, lever semantics, and any scenario's
+full parameter state (think llms.txt meets reproducibility appendix — fetch
+one URL, rebuild the run, verify the numbers). Slots naturally alongside M6
+(forks) since a fork URL should BE the reconstruction record.
