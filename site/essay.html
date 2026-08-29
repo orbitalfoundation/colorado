@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who Drinks the River? — the essay</title>
+<meta name="description" content="The Colorado is over-promised by a third. An essay with a playable model attached: computational journalism on who cuts, how permanently, and who pays.">
+<style>
+:root { color-scheme: light dark;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink-2:#52514e;
+  --muted:#898781; --grid:#e1e0d9; --ring:rgba(11,11,11,.10); --accent:#2a78d6;
+  --mono: ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --sans: system-ui,-apple-system,"Segoe UI",sans-serif; }
+@media (prefers-color-scheme: dark) {
+  :root { --page:#0d0d0d; --surface:#1a1a19; --ink:#fff; --ink-2:#c3c2b7;
+    --muted:#898781; --grid:#2c2c2a; --ring:rgba(255,255,255,.12); --accent:#3987e5; } }
+* { box-sizing:border-box; } html,body { margin:0; }
+body { background:var(--page); color:var(--ink); font:17px/1.66 var(--sans); }
+main { max-width:42rem; margin:0 auto; padding:4.5rem 1.25rem 6rem; }
+h1 { font-size:1.9rem; line-height:1.15; margin:0 0 .3rem; letter-spacing:-.01em; }
+h2 { font-size:1.15rem; margin:2.4rem 0 .6rem; }
+p { margin:.8rem 0; }
+blockquote { margin:1rem 0; padding:.2rem 0 .2rem 1rem; border-left:2px solid var(--grid);
+  color:var(--ink-2); font-size:.95rem; }
+a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; }
+.meta { font:.74rem var(--mono); color:var(--muted); margin-bottom:2rem; }
+.mark { position:fixed; top:.9rem; right:1rem; font:.72rem var(--mono); color:var(--muted);
+  background:color-mix(in srgb,var(--page) 82%,transparent); backdrop-filter:blur(4px);
+  padding:.25rem .5rem; border-radius:4px; }
+.mark a { color:var(--accent); }
+</style>
+</head>
+<body>
+<div class="mark"><a href="./index.html">the story</a> · <a href="./instrument.html">instrument</a> <span data-build></span></div>
+<main>
+<h1>Who Drinks the River?</h1>
+<p class="meta">Anselm Hook · working draft, August 2026 · comments welcome ·
+the playable model lives at <a href="https://colorado.exe.xyz">colorado.exe.xyz</a></p>
+<p>In August, a few days after the federal government announced new cuts on the Colorado River, this crossed my feed:</p>
+<blockquote>&quot;The fact that we can&#x27;t talk about cattle and alfalfa is staggering to me. The value of the dairy and beef industries fed by crops irrigated from the Colorado River are totally negligible. We could just buy their water rights and retire them.&quot;</blockquote>
+<p>That was @AndrewRdeC, quoting @mattyglesias, who had written:</p>
+<blockquote>&quot;The American west will try any approach to managing scarce water other than charging agricultural users the same price as everyone else.&quot;</blockquote>
+<p>How did reading that make you feel? Angry at someone? Which someone? Did you share it? A year from now, when the same fight comes around again, will anything have changed except the usernames?</p>
+<p>I have been circling this problem for a decade. In 2015 I wrote, on a site called simulate.world, that digital simulations were becoming how societies make their big decisions, and that &quot;right now they are the playthings of an elite.&quot; Weather models, catastrophe models, economic models: powerful lenses, pointed by very few hands. I believed ordinary people should be able to test worlds before committing to live in them, and I set out to build that as a platform, a sandbox where anyone could assemble their own model of anything.</p>
+<p>The sandbox nearly buried me. A general tool for non-experts is an enormous amount of labor, and all of its payoff arrives at the end, if anyone shows up. Meanwhile the machines were improving underneath me. Whatever authoring tools I built this year looked likely to be obsolete before they mattered, while the domain work, the actual water accounting and the argument structure, would hold its value no matter what. The sims are the durable asset. The tooling is the disposable part. That inversion took me embarrassingly long to accept.</p>
+<p>So I am trying something smaller and, I think, more honest: standalone pieces. One live public argument, one open model, one page you can play with, shipped together. Call it computational journalism. The discipline is in the topic selection: only fights where a model can actually settle something. A border wall argument is a values fight wearing a costume of facts, and a model there would just be advocacy with equations. Water is the opposite case. Water is conserved. It is measured. Nobody argues their way out of a mass balance. This piece is the first of the series, and before the end of it I am going to hand you the controls.</p>
+<p>First the fact that reorganizes everything else.</p>
+<h2>The ledger does not balance</h2>
+<p>In 1922 the seven basin states divided the Colorado on paper: 7.5 million acre-feet a year to the Upper Basin, 7.5 million to the Lower. In 1944 a treaty promised Mexico another 1.5 million. Call it 16.5 million acre-feet of promises, and the compact holds an option on another million for the Lower Basin in good years.</p>
+<p>The river never agreed to this. The negotiators used flow estimates from an unusually wet stretch of years. Reclamation&#x27;s own reconstruction of natural flow at Lees Ferry, the dividing point between the basins, averages 15.2 million acre-feet a year over the twentieth century (1906 to 1999). Since 2000 it averages 12.4. The promises exceed the water by roughly a third, and they have for a century.</p>
+<p>This is why the Colorado has not regularly reached the sea since 1960. The delta in Mexico, once a vast wetland, is dry except when engineered pulse flows are negotiated for it. Nobody is stealing the water. Everyone is taking their legal share, and the legal shares add up to more than there is. The shortfall lands on whoever holds no paper: the delta, and the reservoirs, which spent this century papering over the deficit by draining themselves. Lake Mead set its all-time record low this August.</p>
+<h2>Two cows and a denominator</h2>
+<p>So is the cattle claim true? Mostly, and the interesting part is where it bends.</p>
+<p>The number comes from Richter and colleagues&#x27; 2024 accounting (<a href="https://doi.org/10.1038/s43247-024-01291-0">https://doi.org/10.1038/s43247-024-01291-0</a>), the most complete water budget the river has ever had. Alfalfa and other hays are 46 percent of direct human consumptive use. Count everything, including reservoir evaporation and the water the river&#x27;s own vegetation breathes out, and cattle feed is 32 percent of total consumption. Half of what humans take, a third of the whole river. The claim survives, provided you say which denominator you mean, and almost nobody does. Even the New York Times, covering August&#x27;s cuts, wrote that &quot;nearly half of the water goes toward growing crops used for animal feed&quot;: true on the human-use denominator, and quietly different from what most readers will repeat.</p>
+<p>Here is where it gets stranger. There is a well-loved podcast episode, Future Ecologies&#x27; &quot;Home on the Rangelands,&quot; that makes a genuinely good case that cattle grazing is one of the better conservation tools California has: grazing knocks back invasive annual grasses, stock ponds shelter endangered salamanders, ranchland holds the line against subdivision. People cite it in these arguments as a defense of the cows. But that episode is about rain-fed rangeland, which takes almost nothing from the river. The Colorado&#x27;s water goes to a different cow: the one eating irrigated desert alfalfa on its way to a dairy or a feedlot. Same animal, two separate water stories. An argument about one is routinely spent defending the other.</p>
+<p>And the economics are stranger still. The line you hear is that alfalfa is worth tens of dollars per acre-foot of water, which would make it absurd. That number is actually the price of the water itself, roughly twenty dollars an acre-foot in the Imperial Valley. The crop&#x27;s revenue runs from about 170 dollars per acre-foot in California&#x27;s accounting up to 450 in a good hay year in Arizona. Meanwhile the federal government has been paying farmers 330 to 418 dollars per acre-foot to fallow fields temporarily and leave the water in Lake Mead. Sit with those numbers. Growing the hay and being paid not to grow it are within arm&#x27;s reach of each other. The margin is thin enough that policy, not physics, decides which one happens. That is the honest core of the Yglesias point: the scandal is not the crop, it is that water priced near zero never forces a choice between uses.</p>
+<h2>Why the obvious fix keeps failing</h2>
+<p>If the water is worth so little, why not buy the farmers out? Two mechanical facts, before any politics.</p>
+<p>A water right is measured at the point of diversion, but a farm only consumes part of what it diverts; the rest returns to the river and someone downstream is already using it. Retire a right to five acre-feet and you might free three of actual wet water. Every buyout budget shrinks on contact with this arithmetic.</p>
+<p>The second fact has a name: Crowley County, Colorado. In the 1970s and 80s its farmers sold their canal shares to the growing Front Range cities. More than 50,000 irrigated acres fell to about 2,500. The county never recovered; by 2011 nearly half its residents lived in poverty, and its main industries today are ranching and two prisons. The lesson is not that water should never move. It is that permanent retirement and a fallow year are different instruments entirely. Fields can rest and come back. A packing shed, a dairy, an equipment dealer, a school district: these decay when the water leaves and do not return when it does. Acre-feet are reversible. Communities are not.</p>
+<h2>The fight now has a schedule</h2>
+<p>The rules that managed shortage on the river expire at the end of this year. The seven states spent years negotiating a replacement and could not agree. So on August 21, three days after Lake Mead&#x27;s record low, the Interior Department imposed a framework of its own: ten years, 2027 through 2036, with operating rules revisited every two years. The first round formalizes cuts the three Lower Basin states had volunteered; the Times put the total at about a quarter of their allocation, with Arizona losing the most, about a third. Arizona&#x27;s governor is already promising to fight for every drop in court.</p>
+<p>Read that structure again. Every two years, for a decade, this argument reruns with real water at stake. The fight you saw in your feed is not a one-time controversy. It is a standing appointment.</p>
+<h2>Play the river</h2>
+<p>So I built the thing I kept wishing existed:</p>
+<p><a href="https://colorado.exe.xyz">https://colorado.exe.xyz</a></p>
+<p>It is a story you scroll and a model you steer, in one page. It opens where the river ends, on NASA&#x27;s satellite image of the dry delta, and the map under the story is real geometry: the basin, the tributaries, the canals that carry the water out. A timeline runs along the bottom from 1906 to 2056 with a seam at today. Left of the seam is Reclamation&#x27;s record; scroll through the century and you watch Hoover fill, Powell fill, the promises get drawn against the wet years, and then a quarter century of drawdown. Right of the seam the same timeline keeps moving, except now it is the model running forward, and the levers are yours: the river&#x27;s flow, how much cattle feed to fallow or retire, other crops, urban conservation, and which rule decides who takes the cut.</p>
+<p>The consequences come with the levers. Do nothing at low flow and the system hits bottom in 2029, and the page says so in plain terms: after that, cuts stop being policy and become physics. Fallow a lot of farmland and the page shows the rent, at real federal forbearance prices, every year, forever. Retire farmland instead and you will discover the slider does not come back down. That ratchet is deliberate. It is Crowley County as an interaction: you can feel irreversibility in your thumb before you have read a word about it.</p>
+<p>Every future you build serializes into a link. Send it to whoever you were arguing with. The seniority rule that erases Arizona while California loses nothing is a link. The shared-moderate-sacrifice future where the reservoirs actually rebuild is a link, with its price tag attached. Is there a setting where nobody is harmed? I have not found one. If you find it, I want to see it.</p>
+<p>The model is small and honest about it: four parties where reality has hundreds, a stylized seniority rule, no groundwater yet, no crop economics beyond the published prices. The source, the data pipelines, and the verification ledger are public (<a href="https://github.com/orbitalfoundation/colorado">https://github.com/orbitalfoundation/colorado</a>), so when you think it is wrong, and somewhere it surely is, you can say so specifically.</p>
+<h2>One green spring</h2>
+<p>Before the close, one fact to hold onto. In the spring of 2014 the two countries opened a gate at Morelos Dam and released 105,000 acre-feet into the dry delta: less than one percent of one year&#x27;s paper promises. The river crossed its bed and touched the sea for the first time in thirteen years, and where the pulse passed, satellites measured the desert greening by more than forty percent. The delta is not gone. It is dormant, and it answers water. The river&#x27;s largest wound responds to a rounding error in the basin&#x27;s arithmetic, whenever people decide to spend it there.</p>
+<h2>Keeping futures open</h2>
+<p>Prior appropriation, first in time, first in right, was a sensible rule for 1870s Colorado: it let strangers invest along a desert river without a government to referee them. The rule outlived its world. Seniority now bears no relation to value, to population, or to any future anyone would choose on purpose. Nobody acted in bad faith. An institution fossilized while the climate moved, and the arguments in our feeds are still about whose cow is drinking.</p>
+<p>If this works even a little, it is a repeatable shape. The same treaty that governs the Colorado governs the Rio Grande, where Mexico fell a year of deliveries behind and the Supreme Court just settled a thirteen-year fight over New Mexico&#x27;s groundwater; one engine, two stories. Behind those wait the Ogallala, the Great Salt Lake, the sinking Central Valley. My hope for the approach is modest and specific: not that a model ends an argument, but that it gives the argument a floor. When the flow number, the denominator, and the seniority rule are things anyone can check and push on, the fight that remains is the real one, about values and who pays, and that fight is worth having.</p>
+<p>The river is over-promised by a third. Everyone serious already agrees consumption must fall. The live questions are who cuts, how permanently, and who pays, and those are exactly the questions a model can hold still long enough for people to argue about honestly. Go play with it. Fork the river. Tell me where it is wrong. That is the point.</p>
+</main>
+</body>
+</html>

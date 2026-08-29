@@ -174,3 +174,13 @@ the whole basin for the philosophical close: prior appropriation as
 fossilized incentive, the every-two-years framework as standing argument,
 the invitation to fork and correct. Copy hecklered (0 tics, burstiness
 0.62). Seven movements now; the mark reads "preview" — friends are viewing.
+
+**Essay published as working draft 2026-08-30** at /essay.html (Anselm's
+order): draft 2 minus editorial scaffolding, labeled "working draft ·
+comments welcome", linked from the story's mark and closing movement. Byline
+his; Substack version still goes through his revision pass. Draft 2 changes:
+verbatim deCoriolis/Yglesias quotes, NYT attributed (twice: as denominator
+specimen and for the cut sizes), "Play the river" section describing the
+real seven-movement experience with the ratchet, "One green spring" hope
+beat before the close. Hecklered 0 tics / burstiness 0.69; arc matches the
+score.
