@@ -151,3 +151,14 @@ County as the retirement-vs-fallowing lesson, the urban 40% ceiling. Still
 absent and honestly labeled: hysteresis, return flows, groundwater, buyout
 price escalation. TODO added: cite the research/advisory ecosystem (names to
 verify) near the M9 sources page.
+
+**M5.7 shipped 2026-08-30 — hysteresis as interaction.** The ag levers now
+have fallow/retire modes. Retire is a ratchet: the retired fraction persists
+in session and URL (rf/rc params), and dragging the slider back down snaps
+it up again — irreversibility you feel in the thumb, Crowley County as
+interaction design. Economics went mode-aware: fallow rents water at the
+verified $330–418/AF-yr (with a serious flag past 1 MAF where today's prices
+won't hold); retirement is one-time (deliberately unpriced — the market
+escalates, per ledger) and carries the return-flow caveat (a purchased right
+frees less wet water than its paper face, ratio still [VERIFY]). The
+stylization note updated to claim exactly what is and isn't computed.

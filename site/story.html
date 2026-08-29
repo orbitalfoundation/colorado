@@ -64,6 +64,10 @@ section.movement p b { color: var(--ink); }
 .control .lval { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); }
 input[type=range] { width: 100%; accent-color: var(--accent); margin: .15rem 0 0; }
 button.copy { font: .78rem var(--mono); color: var(--accent); background: none; border: none; cursor: pointer; padding: 0; }
+.modes { display: inline-flex; gap: .25rem; margin-left: .4rem; }
+.modes button { font: .62rem var(--sans); padding: .1rem .4rem; border-radius: 3px; cursor: pointer;
+  border: 1px solid var(--ring); background: transparent; color: var(--muted); }
+.modes button[aria-pressed="true"] { background: var(--ink-2); border-color: transparent; color: var(--page); }
 
 #dock { position: fixed; left: 0; right: 0; bottom: 0; height: 88px; z-index: 8;
   background: var(--surface); box-shadow: 0 0 0 1px var(--ring);
@@ -187,10 +191,12 @@ svg text { font: 10px var(--mono); fill: var(--muted); }
       <div class="control"><label class="lhead"><span>river flow, share of the 2000–2024 average</span>
         <span class="lval" id="lv-flow">100%</span></label>
         <input id="lever-flow" type="range" min="60" max="115" step="1" value="100"></div>
-      <div class="control"><label class="lhead"><span>retire cattle-feed irrigation</span>
+      <div class="control"><label class="lhead"><span>cattle-feed irrigation
+        <span class="modes" data-for="feed"><button data-m="fallow" aria-pressed="true">fallow, paid yearly</button><button data-m="retire" aria-pressed="false">retire, forever</button></span></span>
         <span class="lval" id="lv-feed">0%</span></label>
         <input id="lever-feed" type="range" min="0" max="100" step="5" value="0"></div>
-      <div class="control"><label class="lhead"><span>retire other crops</span>
+      <div class="control"><label class="lhead"><span>other crops
+        <span class="modes" data-for="crops"><button data-m="fallow" aria-pressed="true">fallow</button><button data-m="retire" aria-pressed="false">retire</button></span></span>
         <span class="lval" id="lv-crops">0%</span></label>
         <input id="lever-crops" type="range" min="0" max="100" step="5" value="0"></div>
       <div class="control"><label class="lhead"><span>urban &amp; industrial conservation</span>

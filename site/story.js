@@ -165,8 +165,18 @@ const fork = {
   feed: Math.min(100, Math.max(0, Number(q0.get('feed')) || 0)),
   crops: Math.min(100, Math.max(0, Number(q0.get('crops')) || 0)),
   city: Math.min(40, Math.max(0, Number(q0.get('city')) || 0)),
+  feedMode: q0.get('feedm') === 'retire' ? 'retire' : 'fallow',
+  cropsMode: q0.get('cropsm') === 'retire' ? 'retire' : 'fallow',
   regime: REGIMES[q0.get('regime')] ? q0.get('regime') : 'framework2728',
 };
+// The hysteresis ratchet: land retired this session stays retired. Sliding
+// back down does not un-retire it — Crowley County in interaction form.
+const ratchet = {
+  feed: Math.min(100, Math.max(0, Number(q0.get('rf')) || 0)),
+  crops: Math.min(100, Math.max(0, Number(q0.get('rc')) || 0)),
+};
+const effFeed = () => Math.max(fork.feed, ratchet.feed);
+const effCrops = () => Math.max(fork.crops, ratchet.crops);
 let steadyShortageAF = 0;
 let futureInfo = null;
 let partyMarkers = {};
@@ -181,9 +191,13 @@ const B = (af, [lo, hi]) => `$${(af * lo / 1e9).toFixed(1)}–${(af * hi / 1e9).
 function consequenceRows() {
   const f = futureInfo, out = [];
   const sev = (icon, cls, html) => out.push({ icon, cls, html });
-  const feedAF = fork.feed / 100 * FEED_MAX_AF;
-  const cropsAF = fork.crops / 100 * CROPS_MAX_AF;
+  const feedAF = effFeed() / 100 * FEED_MAX_AF;
+  const cropsAF = effCrops() / 100 * CROPS_MAX_AF;
   const cityAF = fork.city / 100 * CITY_MAX_AF;
+  const retiredAF = ratchet.feed / 100 * FEED_MAX_AF + ratchet.crops / 100 * CROPS_MAX_AF;
+  const fallowFeedAF = Math.max(0, feedAF - ratchet.feed / 100 * FEED_MAX_AF);
+  const fallowCropsAF = Math.max(0, cropsAF - ratchet.crops / 100 * CROPS_MAX_AF);
+  const fallowAF = fallowFeedAF + fallowCropsAF;
   if (f.floorYear) {
     sev('✕', 'crit', `<b>critical:</b> the system hits bottom in <b>${f.floorYear}</b> — after that, cuts stop being policy and become physics`);
     sev('✕', 'crit', `hydropower at Hoover and Glen Canyon fails before storage reaches the floor; the delta stays dry throughout`);
@@ -194,12 +208,18 @@ function consequenceRows() {
     const nv = steadyShortageAF / ENTITLEMENTS_AF.nevada;
     sev('▲', 'serious', `unfilled demand <b>${(steadyShortageAF / 1e6).toFixed(1)} MAF/yr</b> — about <b>${nv.toFixed(0)}×</b> Nevada's entire share, taken per the rule above`);
   }
+  if (fallowAF > 5e4) {
+    sev('●', 'warn', `renting the fallowed water costs <b>${B(fallowAF, PRICE.forbear)}</b> at 2023–24 forbearance prices — every year, for as long as you need it`);
+    if (fallowAF > 1e6) sev('▲', 'serious', `<b>serious:</b> at this scale today's prices will not hold — the marginal seller gets steadily more expensive`);
+  }
+  if (retiredAF > 5e4) {
+    sev('▲', 'serious', `<b>serious:</b> <b>${(retiredAF / 1e6).toFixed(1)} MAF/yr</b> of farm capacity is retired for good — lower the slider and it stays gone. The buyout is one-time (unpriced here; the market escalates), and a purchased right frees less wet water than its paper face`);
+  }
   if (feedAF > 5e4) {
-    sev('●', 'warn', `paying farmers to give up this much feed water costs <b>${B(feedAF, PRICE.forbear)}</b> at 2023–24 forbearance prices — every year, forever`);
     sev('●', 'warn', `feed revenue off the land: <b>${B(feedAF, PRICE.feedRev)}</b>, plus the dairies and feedlots it supplies (Crowley County is the cautionary tale — see the drawer)`);
   }
   if (cropsAF > 5e4) {
-    sev('▲', 'serious', `<b>serious:</b> retiring other crops removes <b>${B(cropsAF, PRICE.cropRev)}</b> of mostly winter vegetables and orchards — the highest-value, least fallowable water on the river`);
+    sev('▲', 'serious', `<b>serious:</b> cutting other crops removes <b>${B(cropsAF, PRICE.cropRev)}</b> of mostly winter vegetables and orchards — the highest-value, least fallowable water on the river`);
   }
   if (cityAF > 5e4) {
     sev('●', 'warn', `urban conservation of <b>${(cityAF / 1e6).toFixed(1)} MAF/yr</b> ≈ <b>${(cityAF / ENTITLEMENTS_AF.nevada).toFixed(1)}×</b> Nevada's share — real, but the most expensive water to find`);
@@ -222,6 +242,8 @@ function syncForkUrl() {
   const q = new URLSearchParams(location.search);
   q.set('flow', String(fork.flow)); q.set('feed', String(fork.feed));
   q.set('crops', String(fork.crops)); q.set('city', String(fork.city)); q.set('regime', fork.regime);
+  q.set('feedm', fork.feedMode); q.set('cropsm', fork.cropsMode);
+  q.set('rf', String(ratchet.feed)); q.set('rc', String(ratchet.crops));
   history.replaceState(null, '', `?${q}${location.hash}`);
 }
 
@@ -254,7 +276,7 @@ function updateParties() {
   }
 }
 function applyFork() {
-  const agCutAF = fork.feed / 100 * FEED_MAX_AF + fork.crops / 100 * CROPS_MAX_AF;
+  const agCutAF = effFeed() / 100 * FEED_MAX_AF + effCrops() / 100 * CROPS_MAX_AF;
   const mciCutAF = fork.city / 100 * CITY_MAX_AF;
   const info = data.setFuture({ flowFrac: fork.flow / 100, agCutAF, mciCutAF });
   steadyShortageAF = info.steadyShortageAF;
@@ -262,8 +284,8 @@ function applyFork() {
   const s = info.steadyShortageAF;
   strip = buildStrip($('strip'), data, { title: false });
   $('lv-flow').textContent = `${fork.flow}% · ${(data.meanFlow * fork.flow / 100 / 1e6).toFixed(1)} MAF/yr`;
-  $('lv-feed').textContent = `${fork.feed}% · −${(fork.feed / 100 * FEED_MAX_AF / 1e6).toFixed(1)} MAF/yr`;
-  $('lv-crops').textContent = `${fork.crops}% · −${(fork.crops / 100 * CROPS_MAX_AF / 1e6).toFixed(1)} MAF/yr`;
+  $('lv-feed').textContent = `${effFeed()}%${ratchet.feed ? ` (${ratchet.feed}% retired)` : ''} · −${(effFeed() / 100 * FEED_MAX_AF / 1e6).toFixed(1)} MAF/yr`;
+  $('lv-crops').textContent = `${effCrops()}%${ratchet.crops ? ` (${ratchet.crops}% retired)` : ''} · −${(effCrops() / 100 * CROPS_MAX_AF / 1e6).toFixed(1)} MAF/yr`;
   $('lv-city').textContent = `${fork.city}% · −${(fork.city / 100 * CITY_MAX_AF / 1e6).toFixed(1)} MAF/yr`;
   $('forkout').textContent = s > 1e4
     ? `steady-state shortage ${(s / 1e6).toFixed(2)} MAF/yr under this flow — the rule below decides who bears it`
@@ -354,10 +376,27 @@ $('lever-flow').value = fork.flow;
 $('lever-feed').value = fork.feed;
 $('lever-crops').value = fork.crops;
 $('lever-city').value = fork.city;
-$('lever-crops').addEventListener('input', (e) => { fork.crops = Number(e.target.value); syncForkUrl(); applyFork(); });
+$('lever-crops').addEventListener('input', (e) => { fork.crops = Number(e.target.value); ratchetCheck('crops'); syncForkUrl(); applyFork(); });
+function ratchetCheck(which) {
+  const lever = $(`lever-${which}`);
+  if (fork[`${which}Mode`] === 'retire') ratchet[which] = Math.max(ratchet[which], fork[which]);
+  if (Number(lever.value) < ratchet[which]) { lever.value = ratchet[which]; fork[which] = ratchet[which]; }
+}
+for (const el of document.querySelectorAll('.modes')) {
+  el.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-m]');
+    if (!b) return;
+    const which = el.dataset.for;
+    fork[`${which}Mode`] = b.dataset.m;
+    for (const bb of el.children) bb.setAttribute('aria-pressed', String(bb === b));
+    ratchetCheck(which); syncForkUrl(); applyFork();
+  });
+  const which = el.dataset.for;
+  for (const bb of el.children) bb.setAttribute('aria-pressed', String(bb.dataset.m === fork[`${which}Mode`]));
+}
 $('lever-city').addEventListener('input', (e) => { fork.city = Number(e.target.value); syncForkUrl(); applyFork(); });
 $('lever-flow').addEventListener('input', (e) => { fork.flow = Number(e.target.value); syncForkUrl(); applyFork(); });
-$('lever-feed').addEventListener('input', (e) => { fork.feed = Number(e.target.value); syncForkUrl(); applyFork(); });
+$('lever-feed').addEventListener('input', (e) => { fork.feed = Number(e.target.value); ratchetCheck('feed'); syncForkUrl(); applyFork(); });
 $('regimes').addEventListener('click', (e) => {
   const b = e.target.closest('button[data-r]');
   if (b) { fork.regime = b.dataset.r; syncForkUrl(); applyFork(); }
