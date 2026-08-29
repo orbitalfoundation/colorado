@@ -44,6 +44,7 @@ section.movement p b { color: var(--ink); }
 .kicker { font: .7rem var(--mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
 .card a { color: var(--accent); text-decoration: none; }
 .scroll-hint { font: .72rem var(--mono); color: var(--muted); margin-top: .6rem; }
+.evt { font: .74rem var(--mono); color: var(--accent); min-height: 2.2em; }
 
 #dock { position: fixed; left: 0; right: 0; bottom: 0; height: 88px; z-index: 8;
   background: var(--surface); box-shadow: 0 0 0 1px var(--ring);
@@ -61,7 +62,7 @@ svg text { font: 10px var(--mono); fill: var(--muted); }
 </style>
 </head>
 <body>
-<div class="mark">who drinks the river? · M2 skeleton · <a href="./spine.html">spine</a> · <a href="./index.html">instrument</a></div>
+<div class="mark">who drinks the river? · M3 · <a href="./spine.html">spine</a> · <a href="./index.html">instrument</a></div>
 <div id="map"></div>
 
 <div id="story">
@@ -99,15 +100,29 @@ svg text { font: 10px var(--mono); fill: var(--muted); }
       <p class="scroll-hint">[skeleton: Sankey with denominator toggle goes here]</p>
     </div>
   </section>
+  <section class="movement" id="m-promises">
+    <div class="card">
+      <div class="kicker">movement IV · time — the promises</div>
+      <h2>Paper water</h2>
+      <p>The timeline below is following your scroll. Watch the river's
+      actual flow arrive year by year, and watch the promises get drawn on
+      top of it.</p>
+      <svg id="flowfig" preserveAspectRatio="none" style="width:100%;height:150px"></svg>
+      <p class="evt" id="evt-promises">&nbsp;</p>
+      <p>The 1922 negotiators sampled a wet run of years. The promises never
+      fit the river that came after.</p>
+    </div>
+  </section>
   <section class="movement" id="m-history">
     <div class="card">
-      <div class="kicker">movement IV · time, backward</div>
-      <h2>How we got here</h2>
-      <p>Keep scrolling: the timeline below is following you. Hoover Dam
-      closes in 1935 and Mead fills. Glen Canyon closes in 1963 and Powell
-      fills behind it. The system peaks near <b>50</b> million acre-feet in
-      the 1980s.</p>
-      <p>Then 2000 arrives, and a quarter-century of drawdown begins.</p>
+      <div class="kicker">movement IV · time — the drawdown</div>
+      <h2>Spending the savings</h2>
+      <p>The reservoirs papered over the gap: when promises exceed flow, you
+      drain storage. The system peaks near <b>50</b> million acre-feet in the
+      1980s. Then 2000 arrives.</p>
+      <p class="evt" id="evt-history">&nbsp;</p>
+      <p>Twenty-six years later the savings account is three-quarters empty,
+      and the rules that managed the decline have expired.</p>
     </div>
   </section>
   <section class="movement" id="m-future">

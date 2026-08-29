@@ -64,3 +64,27 @@ eye; the 1947 frame (Mead 19.5, Powell an empty ring) and the 2037 frame
 (modeled, combined 7.2) prove the follow-the-reader timeline. Gotchas:
 maplibre Marker owns style.opacity (use visibility to hide markers);
 deploy.sh must copy site/*.mjs.
+
+**TODO (Anselm, 2026-08-29, second batch):**
+- The story gets the **emotional sandwich arc** (per the writing policy in
+  ~/projects/CLAUDE.md): a romantic movement on the river itself up front —
+  indigenous use and presence (the basin holds 30 tribal nations, per
+  Richter et al.'s intro; source everything, tribes are stakeholders not
+  scenery), a pretty picture or two (**real images only** — NASA/USGS/LoC
+  public domain; the house rule about stock photos applies doubly here) —
+  meat in the middle, widening hopeful close.
+- **The river speaks for itself**: an LLM prompted to *be* the river,
+  talking about what it wants. Same grounding leash as the explain-the-state
+  pipeline — the persona is a register, not a license; it narrates real
+  numbers (its own flow, its dry delta, its temperature) and cites the
+  ledger; clearly labeled as a voice, not an oracle. Candidate placement:
+  the romantic intro movement and/or a conversational panel in M9.
+
+**M3 shipped same day**: movement IV split into "Paper water" (1906→1966,
+camera on canyon country; a flow-vs-paper figure inside the card draws the
+Lees Ferry record bar by bar with your scroll, the wet-years band shaded, the
+15 and 16.5 MAF promise lines appearing when signed) and "Spending the
+savings" (1966→today, the 46.9 MAF 1986 peak then the drain). An event ticker
+fires as the scrub passes each verified Law-of-the-River moment, 1922 Compact
+through the Aug 2026 ROD. History reads as animated data. Verified live,
+light/dark, desktop/mobile.
