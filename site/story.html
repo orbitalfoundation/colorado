@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who Drinks the River?</title>
+<meta name="description" content="The Colorado River in four dimensions: space and time, past and future. Scroll the story; fork the future.">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<style>
+:root {
+  color-scheme: light dark;
+  --page: #f9f9f7; --surface: #fcfcfb;
+  --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --ring: rgba(11,11,11,.10);
+  --accent: #2a78d6; --water: #2a78d6;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --page: #0d0d0d; --surface: #1a1a19; --ink: #fff; --ink-2: #c3c2b7;
+    --muted: #898781; --grid: #2c2c2a; --ring: rgba(255,255,255,.12);
+    --accent: #3987e5; --water: #3987e5; }
+}
+* { box-sizing: border-box; } html, body { margin: 0; }
+body { font: 16px/1.55 var(--sans); background: var(--page); color: var(--ink); }
+#map { position: fixed; inset: 0 0 88px 0; }
+.mark { position: fixed; top: .9rem; right: 1rem; z-index: 9;
+  font: .72rem var(--mono); color: var(--muted);
+  background: color-mix(in srgb, var(--page) 82%, transparent);
+  backdrop-filter: blur(4px); padding: .25rem .5rem; border-radius: 4px; }
+.mark a { color: var(--accent); text-decoration: none; }
+
+#story { position: relative; z-index: 3; pointer-events: none; }
+section.movement { min-height: 160vh; display: flex; align-items: flex-start; }
+section.movement .card {
+  pointer-events: auto; margin: 24vh 0 0 1.2rem; max-width: 23rem;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(6px);
+  border-radius: 4px; box-shadow: 0 0 0 1px var(--ring); padding: 1rem 1.15rem;
+}
+section.movement h2 { margin: 0 0 .4rem; font-size: 1.15rem; }
+section.movement p { margin: .45rem 0; font-size: .93rem; color: var(--ink-2); }
+section.movement p b { color: var(--ink); }
+.kicker { font: .7rem var(--mono); color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.card a { color: var(--accent); text-decoration: none; }
+.scroll-hint { font: .72rem var(--mono); color: var(--muted); margin-top: .6rem; }
+
+#dock { position: fixed; left: 0; right: 0; bottom: 0; height: 88px; z-index: 8;
+  background: var(--surface); box-shadow: 0 0 0 1px var(--ring);
+  padding: .35rem .9rem .3rem; display: flex; flex-direction: column; gap: .1rem; }
+#strip { width: 100%; flex: 1; display: block; }
+#readout { font: .74rem var(--mono); color: var(--ink-2); display: flex; gap: 1.1rem;
+  flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+#readout .era { color: var(--accent); }
+#readout b { color: var(--ink); font-weight: 600; }
+svg text { font: 10px var(--mono); fill: var(--muted); }
+@media (max-width: 640px) {
+  section.movement .card { margin: 30vh .8rem 0; max-width: none; }
+  #readout { gap: .6rem; font-size: .68rem; }
+}
+</style>
+</head>
+<body>
+<div class="mark">who drinks the river? · M2 skeleton · <a href="./spine.html">spine</a> · <a href="./index.html">instrument</a></div>
+<div id="map"></div>
+
+<div id="story">
+  <section class="movement" id="m-river">
+    <div class="card">
+      <div class="kicker">movement I · space</div>
+      <h2>This is the river</h2>
+      <p>The Colorado drains a quarter-million square miles of the American
+      West and northern Mexico. Forty million people and five and a half
+      million acres of farmland depend on it.</p>
+      <p>It no longer reaches the sea.</p>
+      <p class="scroll-hint">scroll ⌄</p>
+    </div>
+  </section>
+  <section class="movement" id="m-born">
+    <div class="card">
+      <div class="kicker">movement II · supply</div>
+      <h2>Born in snow</h2>
+      <p>Most of the river begins as snowpack in the Rockies and the Wind
+      River Range. The Green and the mainstem carry it south through the
+      canyon country.</p>
+      <p><b>15.2</b> million acre-feet a year flowed past Lees Ferry on
+      average in the twentieth century. Since 2000: <b>12.4</b>.</p>
+      <p class="scroll-hint">[skeleton: snowpack figure goes here]</p>
+    </div>
+  </section>
+  <section class="movement" id="m-drinks">
+    <div class="card">
+      <div class="kicker">movement III · demand</div>
+      <h2>Who drinks it</h2>
+      <p>Cities take some: Las Vegas, Phoenix, Los Angeles by aqueduct.
+      Denver pulls water through the mountains to the far side of the divide.
+      But the largest single draw is irrigated farmland in the desert
+      southwest, and the largest crop is feed for cattle.</p>
+      <p class="scroll-hint">[skeleton: Sankey with denominator toggle goes here]</p>
+    </div>
+  </section>
+  <section class="movement" id="m-history">
+    <div class="card">
+      <div class="kicker">movement IV · time, backward</div>
+      <h2>How we got here</h2>
+      <p>Keep scrolling: the timeline below is following you. Hoover Dam
+      closes in 1935 and Mead fills. Glen Canyon closes in 1963 and Powell
+      fills behind it. The system peaks near <b>50</b> million acre-feet in
+      the 1980s.</p>
+      <p>Then 2000 arrives, and a quarter-century of drawdown begins.</p>
+    </div>
+  </section>
+  <section class="movement" id="m-future">
+    <div class="card">
+      <div class="kicker">movement V · time, forward</div>
+      <h2>The future forks</h2>
+      <p>Past the seam the line goes dashed: this is no longer record, it is
+      arithmetic. Hold demand at its recent average, give the river its
+      recent average flow, and the reservoirs keep falling.</p>
+      <p>This future is not a prediction. It is a <b>default</b> — what the
+      current rules do if nothing changes. The finished piece hands you the
+      levers here.</p>
+      <p>Until then: <a href="./spine.html">scrub the century yourself</a>,
+      or open <a href="./index.html">the instrument</a>.</p>
+    </div>
+  </section>
+</div>
+
+<div id="dock">
+  <svg id="strip" preserveAspectRatio="none"></svg>
+  <div id="readout">
+    <span><b id="rdate">—</b> <span class="era" id="rera"></span></span>
+    <span>Mead <b id="rmead">—</b></span>
+    <span>Powell <b id="rpowell">—</b></span>
+    <span>combined <b id="rcomb">—</b> MAF</span>
+  </div>
+</div>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script type="module" src="./story.js"></script>
+</body>
+</html>

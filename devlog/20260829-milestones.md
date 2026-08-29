@@ -53,3 +53,14 @@ description of the model, data provenance, lever semantics, and any scenario's
 full parameter state (think llms.txt meets reproducibility appendix — fetch
 one URL, rebuild the run, verify the numbers). Slots naturally alongside M6
 (forks) since a fork URL should BE the reconstruction record.
+
+**M2 shipped same day**: https://colorado.exe.xyz/story.html — five movements
+choreographing the fixed map (whole basin → headwaters → lower-basin
+stakeholders → reservoir country → back out), scroll-linked time through
+movements IV (1906→today) and V (today→2056), stakeholder placeholder labels
+shown only in movement III, slim always-on strip dock. Shared spine machinery
+extracted to site/core.mjs (spine.js refactored onto it). Verified live by
+eye; the 1947 frame (Mead 19.5, Powell an empty ring) and the 2037 frame
+(modeled, combined 7.2) prove the follow-the-reader timeline. Gotchas:
+maplibre Marker owns style.opacity (use visibility to hide markers);
+deploy.sh must copy site/*.mjs.

@@ -8,7 +8,7 @@ SSH="ssh -o StrictHostKeyChecking=accept-new exedev@$VM"
 
 echo "› assembling dist"
 rm -rf "$ROOT/dist"; mkdir -p "$ROOT/dist"
-cp "$ROOT"/site/*.html "$ROOT"/site/*.js "$ROOT/dist/"
+cp "$ROOT"/site/*.html "$ROOT"/site/*.js "$ROOT"/site/*.mjs "$ROOT/dist/"
 cp -r "$ROOT/lib" "$ROOT/data" "$ROOT/dist/"
 
 echo "› rsync -> $VM:/srv/site"
