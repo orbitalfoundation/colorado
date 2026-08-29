@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Spine — Who Drinks the River?</title>
+<meta name="description" content="M1 prototype: the Colorado basin in space and time. Scrub the century; cross the seam into the modeled future.">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<style>
+:root {
+  color-scheme: light dark;
+  --page: #f9f9f7; --surface: #fcfcfb;
+  --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --ring: rgba(11,11,11,.10);
+  --accent: #2a78d6; --water: #2a78d6;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --page: #0d0d0d; --surface: #1a1a19; --ink: #fff; --ink-2: #c3c2b7;
+    --muted: #898781; --grid: #2c2c2a; --ring: rgba(255,255,255,.12);
+    --accent: #3987e5; --water: #3987e5; }
+}
+* { box-sizing: border-box; } html, body { margin: 0; height: 100%; }
+body { font: 15px/1.5 var(--sans); background: var(--page); color: var(--ink); overflow: hidden; }
+#map { position: absolute; inset: 0 0 172px 0; }
+.mark { position: fixed; top: .9rem; right: 1rem; z-index: 5;
+  font: .72rem var(--mono); color: var(--muted);
+  background: color-mix(in srgb, var(--page) 82%, transparent);
+  backdrop-filter: blur(4px); padding: .25rem .5rem; border-radius: 4px; }
+.mark a { color: var(--accent); text-decoration: none; }
+
+#dock { position: absolute; left: 0; right: 0; bottom: 0; height: 172px;
+  background: var(--surface); box-shadow: 0 0 0 1px var(--ring);
+  padding: .55rem .9rem .5rem; display: flex; flex-direction: column; gap: .25rem; }
+#chartwrap { position: relative; flex: 1; min-height: 0; }
+#chart { width: 100%; height: 100%; display: block; }
+#controls { display: flex; align-items: center; gap: .7rem; }
+#scrub { flex: 1; accent-color: var(--accent); margin: 0; }
+#play { font: 1rem var(--sans); background: none; border: 1px solid var(--ring);
+  border-radius: 4px; color: var(--ink-2); width: 2rem; height: 1.7rem; cursor: pointer; }
+#readout { font: .78rem var(--mono); color: var(--ink-2); display: flex; gap: 1.2rem;
+  flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+#readout .era { color: var(--accent); }
+#readout b { color: var(--ink); font-weight: 600; }
+svg text { font: 10px var(--mono); fill: var(--muted); }
+.resv-label { font: 600 11px var(--sans); }
+@media (max-width: 640px) { #readout { gap: .7rem; font-size: .7rem; } }
+</style>
+</head>
+<body>
+<div class="mark">the spine · M1 prototype · <a href="./index.html">instrument</a></div>
+<div id="map"></div>
+<div id="dock">
+  <div id="chartwrap"><svg id="chart" preserveAspectRatio="none"></svg></div>
+  <div id="controls">
+    <button id="play" aria-label="play">▶</button>
+    <input id="scrub" type="range">
+  </div>
+  <div id="readout">
+    <span><b id="rdate">—</b> <span class="era" id="rera"></span></span>
+    <span>Mead <b id="rmead">—</b></span>
+    <span>Powell <b id="rpowell">—</b></span>
+    <span>combined <b id="rcomb">—</b> MAF</span>
+    <span id="rnote"></span>
+  </div>
+</div>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script type="module" src="./spine.js"></script>
+</body>
+</html>
