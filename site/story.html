@@ -13,13 +13,15 @@
   --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
   --grid: #e1e0d9; --ring: rgba(11,11,11,.10);
   --accent: #2a78d6; --water: #2a78d6;
+  --ca: #2a78d6; --az: #eb6834; --nv: #1baf7a; --mx: #eda100;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root { --page: #0d0d0d; --surface: #1a1a19; --ink: #fff; --ink-2: #c3c2b7;
     --muted: #898781; --grid: #2c2c2a; --ring: rgba(255,255,255,.12);
-    --accent: #3987e5; --water: #3987e5; }
+    --accent: #3987e5; --water: #3987e5;
+    --ca: #3987e5; --az: #d95926; --nv: #199e70; --mx: #c98500; }
 }
 * { box-sizing: border-box; } html, body { margin: 0; }
 body { font: 16px/1.55 var(--sans); background: var(--page); color: var(--ink); }
@@ -51,6 +53,11 @@ section.movement p b { color: var(--ink); }
 .denoms button { font: .74rem var(--sans); padding: .3rem .55rem; border-radius: 4px;
   cursor: pointer; border: 1px solid var(--ring); background: transparent; color: var(--ink-2); }
 .denoms button[aria-pressed="true"] { background: var(--accent); border-color: transparent; color: #fff; }
+.control { margin: .55rem 0; }
+.control .lhead { display: flex; justify-content: space-between; font-size: .8rem; color: var(--ink-2); }
+.control .lval { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+input[type=range] { width: 100%; accent-color: var(--accent); margin: .15rem 0 0; }
+button.copy { font: .78rem var(--mono); color: var(--accent); background: none; border: none; cursor: pointer; padding: 0; }
 
 #dock { position: fixed; left: 0; right: 0; bottom: 0; height: 88px; z-index: 8;
   background: var(--surface); box-shadow: 0 0 0 1px var(--ring);
@@ -68,7 +75,7 @@ svg text { font: 10px var(--mono); fill: var(--muted); }
 </style>
 </head>
 <body>
-<div class="mark">who drinks the river? · M3 · <a href="./spine.html">spine</a> · <a href="./index.html">instrument</a></div>
+<div class="mark">who drinks the river? · M5 · <a href="./spine.html">spine</a> · <a href="./index.html">instrument</a></div>
 <div id="map"></div>
 
 <div id="story">
@@ -144,17 +151,33 @@ svg text { font: 10px var(--mono); fill: var(--muted); }
     </div>
   </section>
   <section class="movement" id="m-future">
-    <div class="card">
+    <div class="card wide">
       <div class="kicker">movement V · time, forward</div>
       <h2>The future forks</h2>
-      <p>Past the seam the line goes dashed: this is no longer record, it is
-      arithmetic. Hold demand at its recent average, give the river its
-      recent average flow, and the reservoirs keep falling.</p>
-      <p>This future is not a prediction. It is a <b>default</b> — what the
-      current rules do if nothing changes. The finished piece hands you the
-      levers here.</p>
-      <p>Until then: <a href="./spine.html">scrub the century yourself</a>,
-      or open <a href="./index.html">the instrument</a>.</p>
+      <p>Past the seam this is no longer record, it is arithmetic — and now
+      the arithmetic is yours. Set the river, choose the rule, decide how
+      much cattle-feed irrigation to retire. The map shows each party's
+      delivery; scroll onward to replay the future you configured.</p>
+      <div class="control"><label class="lhead"><span>river flow, share of the 2000–2024 average</span>
+        <span class="lval" id="lv-flow">100%</span></label>
+        <input id="lever-flow" type="range" min="60" max="115" step="1" value="100"></div>
+      <div class="control"><label class="lhead"><span>retire cattle-feed irrigation</span>
+        <span class="lval" id="lv-feed">0%</span></label>
+        <input id="lever-feed" type="range" min="0" max="100" step="5" value="0"></div>
+      <div class="denoms" id="regimes">
+        <button data-r="proportional">proportional</button>
+        <button data-r="priority">seniority (stylized)</button>
+        <button data-r="framework2728">2027–28 framework</button>
+      </div>
+      <p class="fig-note" id="forkout"></p>
+      <p class="fig-note" id="forkparties" style="font-variant-numeric:tabular-nums"></p>
+      <p class="fig-note">Seniority here is a party-level stylization (CAP's
+      1968 juniority, cuts stacking AZ → NV → Mexico → CA); real law works on
+      individual rights. Retiring feed irrigation is modeled as a plain
+      demand cut — no hysteresis, prices, or return-flow mechanics yet.</p>
+      <p>Deeper play: <a href="./spine.html">the spine</a> ·
+      <a href="./index.html">the instrument</a> ·
+      <button class="copy" id="forklink">copy a link to this fork</button></p>
     </div>
   </section>
 </div>

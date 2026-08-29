@@ -4,6 +4,7 @@
 // fires as the scrub passes each Law-of-the-River moment.
 import { loadAll, makeMap, addOverlays, makeReservoirMarkers, buildStrip,
   M0, M_END, SEAM, mlabel, darkMedia } from './core.mjs';
+import { REGIMES, ENTITLEMENTS_AF, PARTIES } from './lib/allocate.mjs';
 
 const data = await loadAll();
 const canals = await fetch('./data/geometry/canals.json').then((r) => r.json());
@@ -37,7 +38,7 @@ const MOVES = {
   'm-drinks':   { bounds: [[-118.8, 31.0], [-108.5, 37.6]], time: SEAM, stakes: true, canals: true },
   'm-promises': { bounds: [[-114.8, 34.6], [-108.8, 39.0]], scrub: [M0, H_SPLIT], evt: 'evt-promises' },
   'm-history':  { bounds: [[-116.6, 33.9], [-109.4, 38.6]], scrub: [H_SPLIT, SEAM], evt: 'evt-history' },
-  'm-future':   { bounds: [[-117.5, 30.8], [-105.2, 43.6]], scrub: [SEAM, M_END] },
+  'm-future':   { bounds: [[-122.8, 29.8], [-106.0, 40.2]], scrub: [SEAM, M_END], parties: true },
 };
 
 const $ = (id) => document.getElementById(id);
@@ -139,6 +140,75 @@ $('denoms').addEventListener('click', (e) => {
   if (b) { denom = b.dataset.d; drawSankey(); }
 });
 
+// ---- the fork: levers, allocation, party delivery on the map -------------
+const FEED_MAX_AF = 7881 * 810.71; // cattle-feed consumptive use, Richter (MCM->AF)
+const PARTY_META = {
+  california: { name: 'California', pos: [-114.9, 33.5], color: 'var(--ca)' },
+  arizona:    { name: 'Arizona',    pos: [-111.7, 34.1], color: 'var(--az)' },
+  nevada:     { name: 'Nevada',     pos: [-114.8, 36.4], color: 'var(--nv)' },
+  mexico:     { name: 'Mexico',     pos: [-113.9, 31.9], color: 'var(--mx)', labelAbove: true },
+};
+const q0 = new URLSearchParams(location.search);
+const fork = {
+  flow: Math.min(115, Math.max(60, Number(q0.get('flow')) || 100)),
+  feed: Math.min(100, Math.max(0, Number(q0.get('feed')) || 0)),
+  regime: REGIMES[q0.get('regime')] ? q0.get('regime') : 'framework2728',
+};
+let steadyShortageAF = 0;
+let partyMarkers = {};
+
+function syncForkUrl() {
+  const q = new URLSearchParams(location.search);
+  q.set('flow', String(fork.flow)); q.set('feed', String(fork.feed)); q.set('regime', fork.regime);
+  history.replaceState(null, '', `?${q}${location.hash}`);
+}
+
+function makePartyMarkers() {
+  partyMarkers = {};
+  const maxE = Math.max(...Object.values(ENTITLEMENTS_AF));
+  for (const pid of PARTIES) {
+    const meta = PARTY_META[pid];
+    const R = Math.round(26 * Math.sqrt(ENTITLEMENTS_AF[pid] / maxE));
+    const el = document.createElement('div');
+    el.innerHTML = `<div class="ring"></div><div class="disc"></div><div class="lab"></div>`;
+    Object.assign(el.style, { position: 'relative', width: `${R * 2}px`, height: `${R * 2}px`, pointerEvents: 'none', visibility: 'hidden' });
+    el.querySelector('.ring').style.cssText = `position:absolute;inset:0;border:1.5px dashed ${meta.color};border-radius:50%;opacity:.8`;
+    el.querySelector('.disc').style.cssText = `position:absolute;border-radius:50%;background:${meta.color};opacity:.7`;
+    el.querySelector('.lab').style.cssText = `position:absolute;${meta.labelAbove ? 'bottom' : 'top'}:100%;left:50%;transform:translateX(-50%);font:600 11px var(--sans);color:var(--ink);white-space:nowrap;text-shadow:0 0 4px var(--page)`;
+    partyMarkers[pid] = { marker: new maplibregl.Marker({ element: el }).setLngLat(meta.pos).addTo(map), el, R };
+  }
+}
+function updateParties() {
+  const { cuts } = REGIMES[fork.regime](steadyShortageAF);
+  for (const pid of PARTIES) {
+    const { el, R } = partyMarkers[pid] ?? {};
+    if (!el) continue;
+    const ent = ENTITLEMENTS_AF[pid], del = ent - cuts[pid];
+    const r = Math.max(1, R * Math.sqrt(Math.max(del, 0) / ent));
+    Object.assign(el.querySelector('.disc').style, {
+      width: `${r * 2}px`, height: `${r * 2}px`, left: `${R - r}px`, top: `${R - r}px` });
+    el.querySelector('.lab').textContent =
+      `${PARTY_META[pid].name} ${(del / 1e6).toFixed(1)}/${(ent / 1e6).toFixed(1)}`;
+  }
+}
+function applyFork() {
+  const { steadyShortageAF: s } = data.setFuture({
+    flowFrac: fork.flow / 100, demandCutAF: fork.feed / 100 * FEED_MAX_AF });
+  steadyShortageAF = s;
+  strip = buildStrip($('strip'), data, { title: false });
+  $('lv-flow').textContent = `${fork.flow}% · ${(data.meanFlow * fork.flow / 100 / 1e6).toFixed(1)} MAF/yr`;
+  $('lv-feed').textContent = `${fork.feed}% · −${(fork.feed / 100 * FEED_MAX_AF / 1e6).toFixed(1)} MAF/yr`;
+  $('forkout').textContent = s > 1e4
+    ? `steady-state shortage ${(s / 1e6).toFixed(2)} MAF/yr under this flow — the rule below decides who bears it`
+    : 'no steady-state shortage under this flow and demand';
+  for (const b of $('regimes').children) b.setAttribute('aria-pressed', String(b.dataset.r === fork.regime));
+  const { cuts } = REGIMES[fork.regime](steadyShortageAF);
+  $('forkparties').innerHTML = PARTIES.map((pid) =>
+    `<span style="color:${PARTY_META[pid].color}">●</span> ${PARTY_META[pid].name} <b>${((ENTITLEMENTS_AF[pid] - cuts[pid]) / 1e6).toFixed(1)}</b>/${(ENTITLEMENTS_AF[pid] / 1e6).toFixed(1)}`).join(' · ');
+  updateParties();
+  setTime(state.m);
+}
+
 // ---- map / dock ----------------------------------------------------------
 function buildAll() {
   mapReady = false;
@@ -157,8 +227,10 @@ function buildAll() {
       el.style.cssText = `font:600 11px var(--sans);color:var(--ink);background:color-mix(in srgb,var(--surface) 85%,transparent);padding:2px 6px;border-radius:4px;box-shadow:0 0 0 1px var(--ring);white-space:nowrap;visibility:hidden`;
       return new maplibregl.Marker({ element: el }).setLngLat(ll).addTo(map);
     });
+    makePartyMarkers();
     mapReady = true;
     onScroll(true);
+    updateParties();
   });
   strip = buildStrip($('strip'), data, { title: false });
   buildFlowFig();
@@ -200,6 +272,7 @@ function onScroll(force = false) {
     if (mapReady) map.fitBounds(mv.bounds, { padding: 30, duration: 1600 });
     for (const mk of stakeMarkers) mk.getElement().style.visibility = mv.stakes ? 'visible' : 'hidden';
     if (map.getLayer('canals')) map.setPaintProperty('canals', 'line-opacity', mv.canals ? 0.9 : 0);
+    for (const pm of Object.values(partyMarkers)) pm.el.style.visibility = mv.parties ? 'visible' : 'hidden';
   }
   setTime(mv.scrub ? mv.scrub[0] + (mv.scrub[1] - mv.scrub[0]) * progress : mv.time);
 }
@@ -209,6 +282,21 @@ addEventListener('scroll', () => { raf ??= requestAnimationFrame(() => { raf = n
 addEventListener('resize', () => onScroll(true));
 darkMedia.addEventListener('change', buildAll);
 
+$('lever-flow').value = fork.flow;
+$('lever-feed').value = fork.feed;
+$('lever-flow').addEventListener('input', (e) => { fork.flow = Number(e.target.value); syncForkUrl(); applyFork(); });
+$('lever-feed').addEventListener('input', (e) => { fork.feed = Number(e.target.value); syncForkUrl(); applyFork(); });
+$('regimes').addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-r]');
+  if (b) { fork.regime = b.dataset.r; syncForkUrl(); applyFork(); }
+});
+$('forklink').addEventListener('click', async (e) => {
+  e.preventDefault();
+  try { await navigator.clipboard.writeText(location.href); $('forklink').textContent = 'copied'; }
+  catch { $('forklink').textContent = location.href; }
+  setTimeout(() => { $('forklink').textContent = 'copy a link to this fork'; }, 1600);
+});
 buildAll();
+applyFork();
 setTime(SEAM);
 if (location.hash) setTimeout(() => document.querySelector(location.hash)?.scrollIntoView({ block: 'start' }), 800);

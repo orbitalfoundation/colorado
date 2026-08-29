@@ -21,12 +21,23 @@ export async function loadAll() {
 
   const split = storage.latest.mead / (storage.latest.mead + storage.latest.powell);
   const meanFlow = flowsJson.averagesMAF['2000-2024'] * 1e6;
-  const run = simulate(
-    Array.from({ length: 31 }, (_, i) => ({ year: 2027 + i, naturalFlowAF: meanFlow })),
-    baselineDemands(richter),
-    { residualInflowAF: 1.77e6, startStorageAF: storage.latest.combined });
-  const simYear = Object.fromEntries(run.years.map((y) => [y.year, y.storageAF]));
-  simYear[2026] = storage.latest.combined;
+  const simYear = {};
+  // Rebuild the right side of the seam under chosen levers; combinedAt/
+  // reservoirsAt read simYear live, so callers just redraw after this.
+  function setFuture({ flowFrac = 1, demandCutAF = 0 } = {}) {
+    const demands = { ...baselineDemands(richter) };
+    demands.ag = Math.max(0, demands.ag - demandCutAF);
+    const run = simulate(
+      Array.from({ length: 31 }, (_, i) => ({ year: 2027 + i, naturalFlowAF: meanFlow * flowFrac })),
+      demands,
+      { residualInflowAF: 1.77e6, startStorageAF: storage.latest.combined });
+    for (const k of Object.keys(simYear)) delete simYear[k];
+    for (const y of run.years) simYear[y.year] = y.storageAF;
+    simYear[2026] = storage.latest.combined;
+    const tail = run.years.slice(10);
+    return { run, steadyShortageAF: tail.reduce((a, y) => a + y.unmetAF, 0) / tail.length };
+  }
+  setFuture();
 
   const combinedAt = (m) => {
     if (m <= SEAM) return { af: storage.combined[mkey(m)] ?? 0, era: 'observed' };
@@ -42,15 +53,15 @@ export async function loadAll() {
     const { af, era } = combinedAt(m);
     return { mead: af * split, powell: af * (1 - split), era };
   };
-  return { storage, basin, rivers, lakes, richter, flowsJson, combinedAt, reservoirsAt };
+  return { storage, basin, rivers, lakes, richter, flowsJson, combinedAt, reservoirsAt, setFuture, meanFlow };
 }
 
 export const darkMedia = matchMedia('(prefers-color-scheme: dark)');
 
 export function makeMap(container, { bounds, interactive = true } = {}) {
   const canvas = darkMedia.matches ? 'World_Dark_Gray_Base' : 'World_Light_Gray_Base';
-  return new maplibregl.Map({
-    container, interactive, attributionControl: { compact: true },
+  const m = new maplibregl.Map({
+    container, interactive, attributionControl: false,
     style: { version: 8, sources: { esri: {
       type: 'raster', tileSize: 256, maxzoom: 12,
       tiles: [`https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/${canvas}/MapServer/tile/{z}/{y}/{x}`],
@@ -58,6 +69,8 @@ export function makeMap(container, { bounds, interactive = true } = {}) {
     } }, layers: [{ id: 'base', type: 'raster', source: 'esri' }] },
     bounds: bounds ?? [[-117.5, 30.8], [-105.2, 43.6]], fitBoundsOptions: { padding: 24 },
   });
+  m.addControl(new maplibregl.AttributionControl({ compact: true }), 'top-left');
+  return m;
 }
 
 export function addOverlays(map, { basin, rivers, lakes }) {

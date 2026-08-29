@@ -98,3 +98,17 @@ everything consumed" (cattle feed 33%) vs "share of direct human use" (47%),
 non-human bands dimming out; ?denom=direct deep-links the mode. The
 half-the-river claim and the two-cows distinction are now adjudicable on
 screen. Verified both modes, light/dark, desktop/mobile.
+
+**M5 shipped 2026-08-30**: the future forks in place. Movement V carries
+levers (flow 60–115%, retire-cattle-feed-irrigation 0–100%, three allocation
+rules); the engine reruns on every change, the dock strip redraws its dashed
+side, and party deliveries render as colored capacity rings on the map plus a
+guaranteed text line in the card. Fork state serializes to the URL
+(?flow=&feed=&regime=) with a copy-link button — the M6 fork mechanism's
+seed. Demonstrated: 80% flow + 50% feed retirement = no steady-state
+shortage (the lever visibly buys the river back); 85% flow under seniority
+vs framework vs proportional shows three different maps. Stylizations
+labeled in-card. Known niggle: Mexico's map disc can sit below the fold at
+some camera settlements (its numbers always show in the card line).
+Claims-ledger sources captured: deCoriolis/Yglesias verbatim, NYT Aug 21
+(with the quarter/third-vs-tranche reconciliation flag).
