@@ -9,7 +9,7 @@ SSH="ssh -o StrictHostKeyChecking=accept-new exedev@$VM"
 echo "› assembling dist"
 rm -rf "$ROOT/dist"; mkdir -p "$ROOT/dist"
 cp "$ROOT"/site/*.html "$ROOT"/site/*.js "$ROOT"/site/*.mjs "$ROOT/dist/"
-cp -r "$ROOT/lib" "$ROOT/data" "$ROOT/dist/"
+cp -r "$ROOT/lib" "$ROOT/data" "$ROOT/site/img" "$ROOT/dist/"
 
 echo "› rsync -> $VM:/srv/site"
 $SSH 'sudo mkdir -p /srv/site && sudo chown exedev /srv /srv/site'

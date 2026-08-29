@@ -33,6 +33,7 @@ const EVENTS = [
 
 const H_SPLIT = 1966 * 12;
 const MOVES = {
+  'm-open':     { bounds: [[-115.8, 31.0], [-113.4, 33.6]], time: SEAM },
   'm-river':    { bounds: [[-117.5, 30.8], [-105.2, 43.6]], time: SEAM },
   'm-born':     { bounds: [[-112.5, 37.8], [-105.6, 43.7]], time: SEAM },
   'm-drinks':   { bounds: [[-118.8, 31.0], [-108.5, 37.6]], time: SEAM, stakes: true, canals: true },
@@ -141,7 +142,17 @@ $('denoms').addEventListener('click', (e) => {
 });
 
 // ---- the fork: levers, allocation, party delivery on the map -------------
-const FEED_MAX_AF = 7881 * 810.71; // cattle-feed consumptive use, Richter (MCM->AF)
+// Mainstem (UB+LB, excl. Gila/Mexico) shares from the Richter sectoral
+// accounting: cattle feed is 69.5% of mainstem irrigation, other crops 30.5%.
+const _s = data.richter.sectoral.sectors;
+const _ag = _s['Irrigated agriculture'];
+const _feedMCM = _ag.crops['Alfalfa'].upperBasinTotal + _ag.crops['Alfalfa'].lowerBasinTotal
+  + _ag.crops['Other Hay'].upperBasinTotal + _ag.crops['Other Hay'].lowerBasinTotal;
+const _agMCM = _ag.upperBasinTotal + _ag.lowerBasinTotal;
+const FEED_SHARE = _feedMCM / _agMCM, CROPS_SHARE = 1 - FEED_SHARE;
+const FEED_MAX_AF = FEED_SHARE * data.baseline.ag;
+const CROPS_MAX_AF = CROPS_SHARE * data.baseline.ag;
+const CITY_MAX_AF = 0.4 * data.baseline.mci; // deep-conservation ceiling
 const PARTY_META = {
   california: { name: 'California', pos: [-114.9, 33.5], color: 'var(--ca)' },
   arizona:    { name: 'Arizona',    pos: [-111.7, 34.1], color: 'var(--az)' },
@@ -152,6 +163,8 @@ const q0 = new URLSearchParams(location.search);
 const fork = {
   flow: Math.min(115, Math.max(60, Number(q0.get('flow')) || 100)),
   feed: Math.min(100, Math.max(0, Number(q0.get('feed')) || 0)),
+  crops: Math.min(100, Math.max(0, Number(q0.get('crops')) || 0)),
+  city: Math.min(40, Math.max(0, Number(q0.get('city')) || 0)),
   regime: REGIMES[q0.get('regime')] ? q0.get('regime') : 'framework2728',
 };
 let steadyShortageAF = 0;
@@ -159,7 +172,8 @@ let partyMarkers = {};
 
 function syncForkUrl() {
   const q = new URLSearchParams(location.search);
-  q.set('flow', String(fork.flow)); q.set('feed', String(fork.feed)); q.set('regime', fork.regime);
+  q.set('flow', String(fork.flow)); q.set('feed', String(fork.feed));
+  q.set('crops', String(fork.crops)); q.set('city', String(fork.city)); q.set('regime', fork.regime);
   history.replaceState(null, '', `?${q}${location.hash}`);
 }
 
@@ -192,12 +206,16 @@ function updateParties() {
   }
 }
 function applyFork() {
+  const agCutAF = fork.feed / 100 * FEED_MAX_AF + fork.crops / 100 * CROPS_MAX_AF;
+  const mciCutAF = fork.city / 100 * CITY_MAX_AF;
   const { steadyShortageAF: s } = data.setFuture({
-    flowFrac: fork.flow / 100, demandCutAF: fork.feed / 100 * FEED_MAX_AF });
+    flowFrac: fork.flow / 100, agCutAF, mciCutAF });
   steadyShortageAF = s;
   strip = buildStrip($('strip'), data, { title: false });
   $('lv-flow').textContent = `${fork.flow}% · ${(data.meanFlow * fork.flow / 100 / 1e6).toFixed(1)} MAF/yr`;
   $('lv-feed').textContent = `${fork.feed}% · −${(fork.feed / 100 * FEED_MAX_AF / 1e6).toFixed(1)} MAF/yr`;
+  $('lv-crops').textContent = `${fork.crops}% · −${(fork.crops / 100 * CROPS_MAX_AF / 1e6).toFixed(1)} MAF/yr`;
+  $('lv-city').textContent = `${fork.city}% · −${(fork.city / 100 * CITY_MAX_AF / 1e6).toFixed(1)} MAF/yr`;
   $('forkout').textContent = s > 1e4
     ? `steady-state shortage ${(s / 1e6).toFixed(2)} MAF/yr under this flow — the rule below decides who bears it`
     : 'no steady-state shortage under this flow and demand';
@@ -284,6 +302,10 @@ darkMedia.addEventListener('change', buildAll);
 
 $('lever-flow').value = fork.flow;
 $('lever-feed').value = fork.feed;
+$('lever-crops').value = fork.crops;
+$('lever-city').value = fork.city;
+$('lever-crops').addEventListener('input', (e) => { fork.crops = Number(e.target.value); syncForkUrl(); applyFork(); });
+$('lever-city').addEventListener('input', (e) => { fork.city = Number(e.target.value); syncForkUrl(); applyFork(); });
 $('lever-flow').addEventListener('input', (e) => { fork.flow = Number(e.target.value); syncForkUrl(); applyFork(); });
 $('lever-feed').addEventListener('input', (e) => { fork.feed = Number(e.target.value); syncForkUrl(); applyFork(); });
 $('regimes').addEventListener('click', (e) => {

@@ -112,3 +112,15 @@ labeled in-card. Known niggle: Mexico's map disc can sit below the fold at
 some camera settlements (its numbers always show in the card line).
 Claims-ledger sources captured: deCoriolis/Yglesias verbatim, NYT Aug 21
 (with the quarter/third-vs-tranche reconciliation flag).
+
+**M5.5 shipped 2026-08-30**: the emotional front bread + richer levers.
+Movement 0 ("Take a breath, and look at where a river ends") opens on the
+delta: the real NASA Landsat image in the card while the map camera sits on
+the same ground, where the river's blue line visibly stops in the desert —
+found data-poetry, the geometry really ends there. Copy hecklered clean
+(0 tics, burstiness 0.52). Leopold-1922 and tribal-nations claims flagged in
+the ledger. Levers grew to four: flow, retire cattle feed (69.5% of mainstem
+irrigation, computed from Richter accounting units), retire other crops
+(30.5%), urban conservation (capped 40%). New fork discovered: 90% flow +
+modest shared cuts (−2.5 MAF total) and the reservoirs RECOVER to 17 MAF by
+2037 — the shared-sacrifice-rebuilds-the-buffer scenario.

@@ -24,9 +24,11 @@ export async function loadAll() {
   const simYear = {};
   // Rebuild the right side of the seam under chosen levers; combinedAt/
   // reservoirsAt read simYear live, so callers just redraw after this.
-  function setFuture({ flowFrac = 1, demandCutAF = 0 } = {}) {
-    const demands = { ...baselineDemands(richter) };
-    demands.ag = Math.max(0, demands.ag - demandCutAF);
+  const baseline = baselineDemands(richter);
+  function setFuture({ flowFrac = 1, agCutAF = 0, mciCutAF = 0 } = {}) {
+    const demands = { ...baseline };
+    demands.ag = Math.max(0, demands.ag - agCutAF);
+    demands.mci = Math.max(0, demands.mci - mciCutAF);
     const run = simulate(
       Array.from({ length: 31 }, (_, i) => ({ year: 2027 + i, naturalFlowAF: meanFlow * flowFrac })),
       demands,
@@ -53,7 +55,7 @@ export async function loadAll() {
     const { af, era } = combinedAt(m);
     return { mead: af * split, powell: af * (1 - split), era };
   };
-  return { storage, basin, rivers, lakes, richter, flowsJson, combinedAt, reservoirsAt, setFuture, meanFlow };
+  return { storage, basin, rivers, lakes, richter, flowsJson, combinedAt, reservoirsAt, setFuture, meanFlow, baseline };
 }
 
 export const darkMedia = matchMedia('(prefers-color-scheme: dark)');

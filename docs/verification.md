@@ -221,3 +221,16 @@ volumes before any publication.** NYT also confirms: voluntary-cuts
 formalization, no mandatory UB cuts, SCOTUS as the looming venue, ~20% flow
 decline over two decades, record-low 2026 snowpack, and uses the direct-use
 denominator for the cattle-feed share. Sources in reference/claims/.
+
+## Movement 0 anchors (added 2026-08-30)
+
+- Delta image: NASA Earth Observatory "Green Lagoons No More" (Landsat 8 OLI,
+  spring 2020), earthobservatory.nasa.gov/images/146839 — public domain,
+  credited in-page. Local copy site/img/delta-landsat-2020.jpg, verified by
+  eye.
+- `[VERIFY before publication]` Aldo Leopold's delta canoe trip was 1922 (with
+  brother Carl), later the essay "The Green Lagoons" in A Sand County
+  Almanac. Widely documented; confirm the year against a Leopold biography
+  or the Aldo Leopold Foundation before the claim ships.
+- "Thirty tribal nations" per Richter et al. 2024 intro; note NYT says
+  "about two dozen native tribes" — Richter's figure used, discrepancy noted.

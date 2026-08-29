@@ -79,6 +79,26 @@ svg text { font: 10px var(--mono); fill: var(--muted); }
 <div id="map"></div>
 
 <div id="story">
+  <section class="movement" id="m-open">
+    <div class="card">
+      <div class="kicker">before the ledger</div>
+      <h2>Take a breath, and look at where a river ends</h2>
+      <img src="./img/delta-landsat-2020.jpg" alt="Landsat image of the dry Colorado River delta meeting the Gulf of California" style="width:100%;border-radius:4px;margin:.3rem 0">
+      <p class="meta" style="font-size:.68rem">the delta, spring 2020 · Landsat 8 · NASA Earth Observatory / USGS</p>
+      <p>For millions of years the Colorado carried the Rocky Mountains to
+      the sea here, and spent them on a wetland. One of the great desert
+      oases of the world. In 1922, the same year seven states divided its
+      water on paper, a young Aldo Leopold canoed these channels and wrote
+      of green lagoons. The photograph shows what is left: salt flat, dune,
+      a tidal channel meeting a sea the river no longer reaches.</p>
+      <p>People lived with this river long before there was paper to divide
+      it; thirty tribal nations hold rights and history in the basin today.
+      Forty million people drink from it, and most never see it.</p>
+      <p>What follows is the river's story in four dimensions: space and
+      time, past and future. The past is a record. The future has levers.</p>
+      <p class="scroll-hint">scroll ⌄</p>
+    </div>
+  </section>
   <section class="movement" id="m-river">
     <div class="card">
       <div class="kicker">movement I · space</div>
@@ -164,6 +184,12 @@ svg text { font: 10px var(--mono); fill: var(--muted); }
       <div class="control"><label class="lhead"><span>retire cattle-feed irrigation</span>
         <span class="lval" id="lv-feed">0%</span></label>
         <input id="lever-feed" type="range" min="0" max="100" step="5" value="0"></div>
+      <div class="control"><label class="lhead"><span>retire other crops</span>
+        <span class="lval" id="lv-crops">0%</span></label>
+        <input id="lever-crops" type="range" min="0" max="100" step="5" value="0"></div>
+      <div class="control"><label class="lhead"><span>urban &amp; industrial conservation</span>
+        <span class="lval" id="lv-city">0%</span></label>
+        <input id="lever-city" type="range" min="0" max="40" step="5" value="0"></div>
       <div class="denoms" id="regimes">
         <button data-r="proportional">proportional</button>
         <button data-r="priority">seniority (stylized)</button>
