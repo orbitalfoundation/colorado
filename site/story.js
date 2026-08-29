@@ -40,6 +40,8 @@ const MOVES = {
   'm-promises': { bounds: [[-114.8, 34.6], [-108.8, 39.0]], scrub: [M0, H_SPLIT], evt: 'evt-promises' },
   'm-history':  { bounds: [[-116.6, 33.9], [-109.4, 38.6]], scrub: [H_SPLIT, SEAM], evt: 'evt-history' },
   'm-future':   { bounds: [[-122.8, 29.8], [-106.0, 40.2]], scrub: [SEAM, M_END], parties: true },
+  'm-pulse':    { bounds: [[-115.8, 31.0], [-113.4, 33.6]], time: SEAM },
+  'm-keep':     { bounds: [[-117.5, 30.8], [-105.2, 43.6]], time: SEAM },
 };
 
 const $ = (id) => document.getElementById(id);
@@ -401,11 +403,12 @@ $('regimes').addEventListener('click', (e) => {
   const b = e.target.closest('button[data-r]');
   if (b) { fork.regime = b.dataset.r; syncForkUrl(); applyFork(); }
 });
-$('forklink').addEventListener('click', async (e) => {
+for (const id of ['forklink', 'forklink2']) $(id)?.addEventListener('click', async (e) => {
   e.preventDefault();
-  try { await navigator.clipboard.writeText(location.href); $('forklink').textContent = 'copied'; }
-  catch { $('forklink').textContent = location.href; }
-  setTimeout(() => { $('forklink').textContent = 'copy a link to this fork'; }, 1600);
+  const el = e.currentTarget;
+  try { await navigator.clipboard.writeText(location.href); el.textContent = 'copied'; }
+  catch { el.textContent = location.href; }
+  setTimeout(() => { el.textContent = 'copy a link to this fork'; }, 1600);
 });
 buildAll();
 applyFork();

@@ -162,3 +162,15 @@ won't hold); retirement is one-time (deliberately unpriced — the market
 escalates, per ledger) and carries the return-flow caveat (a purchased right
 frees less wet water than its paper face, ratio still [VERIFY]). The
 stylization note updated to claim exactly what is and isn't computed.
+
+**Closing movements shipped 2026-08-30.** The sandwich is whole: movement VI
+("One green spring") returns to the delta camera from movement 0 with the
+real April 2014 pulse-flow Landsat frame — water threading the dry bed past
+San Luis Río Colorado — and the verified facts: 105,000 AF (under 1% of a
+year's paper promises), the sea touched for the first time in thirteen
+years, >40% green-up where the pulse passed. "The delta is not gone. It is
+dormant, and it answers water." Movement VII ("Fork the river") widens to
+the whole basin for the philosophical close: prior appropriation as
+fossilized incentive, the every-two-years framework as standing argument,
+the invitation to fork and correct. Copy hecklered (0 tics, burstiness
+0.62). Seven movements now; the mark reads "preview" — friends are viewing.
