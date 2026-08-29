@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Instrument — Who Drinks the River?</title>
+<meta name="description" content="A working model of Colorado River allocation. Set the flow, choose the rule, see who gets what.">
+<style>
+/* Tokens — light first, dark via prefers-color-scheme. System stacks only. */
+:root {
+  color-scheme: light dark;
+  --page: #f9f9f7; --surface: #fcfcfb;
+  --ink: #0b0b0b; --ink-2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --baseline: #c3c2b7; --ring: rgba(11,11,11,.10);
+  --accent: #2a78d6;
+  --ca: #2a78d6; --az: #eb6834; --nv: #1baf7a; --mx: #eda100;
+  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #0d0d0d; --surface: #1a1a19;
+    --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --baseline: #383835; --ring: rgba(255,255,255,.10);
+    --accent: #3987e5;
+    --ca: #3987e5; --az: #d95926; --nv: #199e70; --mx: #c98500;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--page); color: var(--ink);
+  font: 17px/1.6 var(--sans);
+  -webkit-text-size-adjust: 100%;
+}
+main { max-width: 44rem; margin: 0 auto; padding: 4.5rem 1.25rem 6rem; }
+h1 { font-size: 1.9rem; line-height: 1.15; margin: 0 0 .4rem; letter-spacing: -.01em; }
+h2 { font-size: 1.05rem; margin: 3rem 0 .8rem; }
+p { margin: .6rem 0; }
+.dek { color: var(--ink-2); font-size: 1.05rem; margin-bottom: .4rem; }
+.meta, small { font-family: var(--mono); font-size: .74rem; color: var(--muted); letter-spacing: .01em; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* floating project mark — no header */
+.mark {
+  position: fixed; top: .9rem; right: 1rem; z-index: 5;
+  font-family: var(--mono); font-size: .72rem; color: var(--muted);
+  background: color-mix(in srgb, var(--page) 82%, transparent);
+  backdrop-filter: blur(4px); padding: .25rem .5rem; border-radius: 4px;
+}
+
+/* controls */
+.panel { background: var(--surface); border-radius: 4px; box-shadow: 0 0 0 1px var(--ring); padding: 1rem 1.1rem; margin: 1.2rem 0; }
+.control { margin: .9rem 0; }
+.control label.head { display: flex; justify-content: space-between; align-items: baseline; font-size: .86rem; color: var(--ink-2); margin-bottom: .35rem; }
+.control .value { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); }
+input[type=range] { width: 100%; accent-color: var(--accent); margin: 0; }
+.regimes { display: flex; flex-wrap: wrap; gap: .4rem; }
+.regimes button {
+  font: .84rem var(--sans); padding: .42rem .7rem; border-radius: 4px; cursor: pointer;
+  border: 1px solid var(--ring); background: transparent; color: var(--ink-2);
+}
+.regimes button[aria-pressed="true"] { background: var(--accent); border-color: transparent; color: #fff; }
+.hint { font-size: .78rem; color: var(--muted); margin-top: .4rem; }
+
+/* stat tiles */
+.stats { display: flex; gap: 2rem; flex-wrap: wrap; margin: 1.4rem 0; }
+.stat .n { font-size: 2rem; line-height: 1.1; }
+.stat .l { font-size: .78rem; color: var(--muted); }
+
+/* charts */
+svg { display: block; width: 100%; height: auto; }
+svg text { font-family: var(--mono); font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.tip {
+  position: absolute; pointer-events: none; display: none;
+  background: var(--surface); box-shadow: 0 0 0 1px var(--ring);
+  border-radius: 4px; padding: .3rem .5rem;
+  font: .74rem var(--mono); color: var(--ink); white-space: nowrap;
+}
+.chartwrap { position: relative; }
+
+/* party bars */
+.bars { margin: .6rem 0; }
+.brow { margin: .75rem 0; }
+.brow .head { display: flex; justify-content: space-between; font-size: .82rem; margin-bottom: .3rem; }
+.brow .head .who { color: var(--ink); }
+.brow .head .amt { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink-2); }
+.track { height: 14px; border-radius: 4px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--ring); overflow: hidden; }
+.fill { height: 100%; border-radius: 3px; transition: width .25s ease; }
+
+.notes { border-top: 1px solid var(--grid); margin-top: 3.5rem; padding-top: 1rem; }
+.notes p { font-size: .84rem; color: var(--ink-2); }
+button.copy { font: .78rem var(--mono); color: var(--accent); background: none; border: none; cursor: pointer; padding: 0; }
+</style>
+</head>
+<body>
+<div class="mark">the instrument · <a href="./index.html">story</a> · <span data-build></span></div>
+<main>
+  <h1>Who Drinks the River?</h1>
+  <p class="dek">The Colorado's paper allocations exceed its water, and the shortfall
+  has to land on someone. This is a working model of that arithmetic: set the
+  river's flow, choose the allocation rule, and the model computes who gets what.</p>
+  <p class="meta">prototype · data: Richter et&nbsp;al.&nbsp;2024, Reclamation natural-flow &amp; post-2026 ROD · stylizations labeled below</p>
+
+  <div class="panel">
+    <div class="control">
+      <label class="head" for="flow"><span>River flow, share of the 2000–2024 average (12.4&nbsp;MAF/yr)</span>
+        <span class="value" id="flowv">100%</span></label>
+      <input id="flow" type="range" min="60" max="115" step="1" value="100">
+    </div>
+    <div class="control">
+      <label class="head"><span>Allocation rule for shortage</span></label>
+      <div class="regimes" role="group" id="regimes">
+        <button data-r="proportional">Proportional</button>
+        <button data-r="priority">Seniority (stylized)</button>
+        <button data-r="framework2728">2027–28 framework</button>
+      </div>
+      <p class="hint" id="regimehint"></p>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="shortn">—</div><div class="l">steady-state shortage, MAF/yr</div></div>
+    <div class="stat"><div class="n" id="storn">—</div><div class="l">reservoir storage in 20&nbsp;yrs, MAF</div></div>
+  </div>
+
+  <h2>Reservoir storage, next 30 years</h2>
+  <p class="meta">combined Lake Mead + Lake Powell live storage · starts at today's observed 12.1&nbsp;MAF</p>
+  <div class="chartwrap" id="storagewrap"><svg id="storage" viewBox="0 0 680 260" role="img" aria-label="Projected combined reservoir storage over 30 years"></svg><div class="tip" id="stip"></div></div>
+
+  <h2>Who takes the cut</h2>
+  <p class="meta">annual entitlement vs. steady-state delivery under the chosen rule</p>
+  <div class="bars" id="bars"></div>
+
+  <p><button class="copy" id="copylink">copy link to this scenario</button></p>
+
+  <div class="notes">
+    <p><strong>What this is.</strong> An annual mass balance of the Colorado
+    mainstem: one storage node (Mead+Powell), naturalized Lees&nbsp;Ferry inflow,
+    direct human consumption held at its 2000–2019 recorded average
+    (13.7&nbsp;MAF/yr), evaporation scaling with storage. Backtested against the
+    2000–2024 reservoir collapse; its one calibrated parameter (1.77&nbsp;MAF/yr
+    of residual inflow) sits inside the hydrologically expected range.</p>
+    <p><strong>Stylization.</strong> The seniority rule shown here is a
+    party-level simplification of the priority system — Arizona's CAP is junior
+    to California's 4.4&nbsp;MAF under the 1968 Basin Project Act, so cuts stack
+    Arizona&nbsp;→&nbsp;Nevada&nbsp;→&nbsp;Mexico&nbsp;→&nbsp;California. Real law
+    operates on individual rights and treaty minutes. The 2027–28 rule follows
+    the Record of Decision signed August&nbsp;21,&nbsp;2026: the states' own
+    negotiated split for the first 1.5&nbsp;MAF, seniority beyond it.</p>
+    <p><strong>Sources.</strong> Richter et&nbsp;al. 2024,
+    <a href="https://doi.org/10.1038/s43247-024-01291-0">10.1038/s43247-024-01291-0</a>
+    (consumption accounting); Reclamation natural-flow database 1906–2024
+    (supply); Boulder Canyon Project Act &amp; 1944 Treaty (entitlements);
+    post-2026 ROD (framework). Full verification ledger ships with the source.</p>
+  </div>
+</main>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
