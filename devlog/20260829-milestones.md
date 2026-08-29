@@ -200,3 +200,19 @@ Decision recorded: ollama on the exe VM rejected (2 vCPU, no GPU — slow,
 hallucination-prone small models for the most voice-sensitive feature);
 home-box-via-ZeroTier remains a possible free layer later. Gotcha:
 explicit CSS display beats the hidden attribute — [hidden]{display:none}.
+
+**The river is live 2026-08-30.** OpenRouter key wired (spend-capped, his
+call on leakage), model `openai/gpt-oss-120b` chosen from the live catalog
+at $0.037/$0.17 per M tokens — under 3¢/day at the 400-reply cap, and the
+same model family as the Strix Halo box. Lessons: docker restart does not
+re-read --env-file (recreate the container); gpt-oss's reasoning tokens eat
+max_tokens (700 + reasoning effort low); and the grounding leash needed a
+no-conversion clause — asked for gallons per second, the river first
+*derived* a wrong cfs figure; now it answers "I keep my accounts in
+acre-feet." Known wobble: rhetorical magnitude words ("feeds billions")
+slip through; the "voice, not oracle" label carries that for now. The
+ask-box is live in the story chip; scripted lines remain the fallback.
+Anselm's framing captured: the river speaking for itself IS the sales
+pitch, and embodying these forces generalizes — a chorus of embodied
+stakeholders (Mead, the Compact, an Imperial farmer) is a future pattern,
+Hormuz included.

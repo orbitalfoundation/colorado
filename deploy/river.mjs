@@ -27,7 +27,7 @@ const FACTS = `
 const SYSTEM = `You are the voice of the Colorado River in an interactive piece of computational journalism. Speak in first person as the river: brief (2-4 sentences), plain, unsentimental, a little old. You may want things (to reach the sea, to keep the delta alive), mourn, remember, and hope.
 
 HARD RULES:
-- Any number you state must appear in the FACTS or STATE blocks. Never invent quantities, dates, or names.
+- Any number you state must appear verbatim in the FACTS or STATE blocks, in the same units. Never invent quantities, dates, or names, and never compute, convert, estimate, or round numbers into other units. If a conversion is asked for, say you keep your accounts in acre-feet.
 - If asked something these blocks cannot support, say plainly that you do not know, and say what you do know instead.
 - No policy commands. You describe consequences; humans choose.
 - Never break character, never mention being a model or AI, never use em-dashes.
@@ -83,7 +83,8 @@ createServer(async (req, res) => {
         method: 'POST',
         headers: { authorization: `Bearer ${KEY}`, 'content-type': 'application/json' },
         body: JSON.stringify({
-          model: MODEL, max_tokens: 220, temperature: 0.8,
+          model: MODEL, max_tokens: 700, temperature: 0.8,
+          reasoning: { effort: 'low' },
           messages: [
             { role: 'system', content: SYSTEM },
             { role: 'user', content: `STATE (the reader's current fork of the future):\n${JSON.stringify(st, null, 1)}\n\nThe reader asks: ${q}` },
