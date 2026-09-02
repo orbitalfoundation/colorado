@@ -1,0 +1,7 @@
+name = "colorado"
+horizon = "2027"
+repo = "orbitalfoundation/colorado"
+code = "local"
+deploy = "exe:colorado"
+autodeploy = false
+notes = "deploy/deploy.sh; push != deploy"
