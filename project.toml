@@ -1,5 +1,5 @@
 name = "colorado"
-horizon = "2027"
+horizon = "2026"
 repo = "orbitalfoundation/colorado"
 code = "local"
 deploy = "exe:colorado"
