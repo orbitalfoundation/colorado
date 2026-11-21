@@ -1,3 +1,8 @@
 dist/
 node_modules/
 essay/
+
+# installed per session by anselm/house-skills cloud-setup.sh; never committed
+.claude/skills/
+.claude/hooks/
+.claude/settings.json
